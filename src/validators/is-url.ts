@@ -2,7 +2,6 @@ import {isIp4, isIp6} from "./is-ip";
 import {isFqdn} from "./is-fqdn";
 import {IsUrlOptions} from "../interfaces/options/IsUrlOptions";
 import {isString} from "./is-string";
-import {URL} from "url";
 
 export function isUrl(input: any, options?: IsUrlOptions): boolean {
     // Set default options?

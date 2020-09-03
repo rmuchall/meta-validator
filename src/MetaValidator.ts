@@ -3,7 +3,7 @@ import {ValidatorOptions} from "./interfaces/options/ValidatorOptions";
 import {Metadata} from "./interfaces/Metadata";
 import {ValidationErrors} from "./interfaces/ValidationErrors";
 
-export class MetaValidator {
+export abstract class MetaValidator {
     private static metadata: Record<string, Metadata> = {};
 
     static async validate(obj: Record<string, any>, options?: ValidatorOptions): Promise<ValidationErrors> {

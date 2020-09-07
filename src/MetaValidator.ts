@@ -1,26 +1,47 @@
 import {ValidationContext} from "./interfaces/ValidationContext";
-import {ValidatorOptions} from "./interfaces/options/ValidatorOptions";
+import {ValidatorOptions} from "./interfaces/ValidatorOptions";
 import {Metadata} from "./interfaces/Metadata";
 import {ValidationErrors} from "./interfaces/ValidationErrors";
 
 export abstract class MetaValidator {
     private static metadata: Record<string, Metadata> = {};
+    private static circularCheck: Set<Record<string, any>> = new Set<Record<string, any>>();
 
-    static async validate(obj: Record<string, any>, options?: ValidatorOptions): Promise<ValidationErrors> {
-        if (!obj || !obj.constructor) {
-            throw new Error("Cannot validate input that is not an instance of a class");
-        }
-
-        const className = obj.constructor.name;
-        if (!MetaValidator.metadata[className]) {
-            throw new Error(`No validation metadata found for ${className}`);
-        }
+    static async validate(obj: Record<string, any>[], options?: ValidatorOptions): Promise<ValidationErrors[]>
+    static async validate(obj: Record<string, any>, options?: ValidatorOptions): Promise<ValidationErrors>
+    static async validate(obj: Record<string, any> | Record<string, any>[], options?: ValidatorOptions): Promise<ValidationErrors[] | ValidationErrors> {
+        MetaValidator.circularCheck.clear();
 
         if (!options) {
             // Set default options
             options = {
                 isSkipMissingProperties: false
             };
+        }
+
+        if (Array.isArray(obj)) {
+            return MetaValidator.validateArray(obj, options);
+        }
+
+        return MetaValidator.validateObject(obj, options);
+    }
+
+    private static async validateObject(obj: Record<string, any>, options: ValidatorOptions): Promise<ValidationErrors> {
+        // Check for circular dependencies
+        if (MetaValidator.circularCheck.has(obj)) {
+            throw new Error("Object has a circular dependency");
+        }
+        MetaValidator.circularCheck.add(obj);
+
+        // Check obj is an instance of a class
+        if (!obj || !obj.constructor) {
+            throw new Error("Cannot validate input that is not an instance of a class");
+        }
+
+        // Check obj has corresponding validation metadata
+        const className = obj.constructor.name;
+        if (!MetaValidator.metadata[className]) {
+            throw new Error(`No validation metadata found for ${className}`);
         }
 
         // Check for extraneous properties
@@ -30,9 +51,9 @@ export abstract class MetaValidator {
             }
         }
 
+        // Perform validation
         const validationErrors: ValidationErrors = {};
         for (const propertyKey of Object.keys(MetaValidator.metadata[className])) {
-
             // Skip missing properties?
             if (!Object.hasOwnProperty.call(obj, propertyKey) &&
                 options.isSkipMissingProperties) {
@@ -46,10 +67,17 @@ export abstract class MetaValidator {
 
                 // Nested
                 if (context.isNested) {
-                    const nestedValidationErrors = await MetaValidator.validate(obj[propertyKey]);
-
-                    if (Object.keys(nestedValidationErrors).length > 0) {
-                        validationErrors[context.propertyKey] = nestedValidationErrors;
+                    let nestedValidationErrors: ValidationErrors | ValidationErrors[];
+                    if (Array.isArray(obj[propertyKey])) {
+                        nestedValidationErrors = await MetaValidator.validateArray(obj[propertyKey], options);
+                        if (nestedValidationErrors.length > 0) {
+                            validationErrors[context.propertyKey] = nestedValidationErrors;
+                        }
+                    } else {
+                        nestedValidationErrors = await MetaValidator.validateObject(obj[propertyKey], options);
+                        if (Object.keys(nestedValidationErrors).length > 0) {
+                            validationErrors[context.propertyKey] = nestedValidationErrors;
+                        }
                     }
 
                     continue;
@@ -73,6 +101,15 @@ export abstract class MetaValidator {
         }
 
         return validationErrors;
+    }
+
+    private static async validateArray(objArray: Record<string, any>[], options: ValidatorOptions) {
+        const validationErrorArray: ValidationErrors[] = [];
+        for (const obj of objArray) {
+            validationErrorArray.push(await MetaValidator.validateObject(obj, options));
+        }
+
+        return validationErrorArray;
     }
 
     static addMetadata(context: ValidationContext): void {

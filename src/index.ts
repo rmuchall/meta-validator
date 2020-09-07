@@ -22,11 +22,11 @@ export * from "./interfaces/Metadata";
 export * from "./interfaces/ValidationContext";
 export * from "./interfaces/ValidationErrors";
 export * from "./interfaces/Validator";
+export * from "./interfaces/ValidatorOptions";
 // interfaces/options
 export * from "./interfaces/options/IsFqdnOptions";
 export * from "./interfaces/options/IsIpOptions";
 export * from "./interfaces/options/IsUrlOptions";
-export * from "./interfaces/options/ValidatorOptions";
 // validators
 export * from "./validators/is-alpha";
 export * from "./validators/is-alphanumeric";

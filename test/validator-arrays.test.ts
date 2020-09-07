@@ -1,7 +1,7 @@
-import {MetaValidator} from "../../src/MetaValidator";
-import {IsString} from "../../src/decorators/property/IsString";
-import {IsNested} from "../../src/decorators/property/IsNested";
-import {ValidationErrors} from "../../src/interfaces/ValidationErrors";
+import {MetaValidator} from "../src/MetaValidator";
+import {IsString} from "../src/decorators/property/IsString";
+import {IsNested} from "../src/decorators/property/IsNested";
+import {ValidationErrors} from "../src/interfaces/ValidationErrors";
 
 const validValues: any[] = [
     "abc",
@@ -21,7 +21,7 @@ const invalidValues: any[] = [
 
 beforeEach(MetaValidator.clearMetadata);
 
-test("decorators.IsNested() valid values", async () => {
+test("Arrays valid values", async () => {
     class WidgetColor {
         @IsString()
         color: string;
@@ -43,6 +43,7 @@ test("decorators.IsNested() valid values", async () => {
         widgetMaterial: WidgetMaterial;
     }
 
+    const widgetArray: Widget[] = [];
     for (const value of validValues) {
         const widget: Widget = Object.assign<Widget, Widget>(new Widget(), {
             name: value,
@@ -53,12 +54,16 @@ test("decorators.IsNested() valid values", async () => {
                 })
             })
         });
-        const validationErrors = await MetaValidator.validate(widget);
-        expect(Object.keys(validationErrors).length).toBe(0);
+        widgetArray.push(widget);
+    }
+
+    const validationErrorArray = await MetaValidator.validate(widgetArray);
+    for (const validationError of validationErrorArray) {
+        expect(Object.keys(validationError).length).toBe(0);
     }
 });
 
-test("decorators.IsNested() invalid values", async () => {
+test("Arrays invalid values", async () => {
     class WidgetColor {
         @IsString()
         color: string;
@@ -80,6 +85,7 @@ test("decorators.IsNested() invalid values", async () => {
         widgetMaterial: WidgetMaterial;
     }
 
+    const widgetArray: Widget[] = [];
     for (const value of invalidValues) {
         const widget: Widget = Object.assign<Widget, Widget>(new Widget(), {
             name: value,
@@ -90,9 +96,11 @@ test("decorators.IsNested() invalid values", async () => {
                 })
             })
         });
-        const validationErrors = await MetaValidator.validate(widget);
-        expect(Object.keys(validationErrors).length).toBe(2);
-        expect(Object.keys(validationErrors.widgetMaterial).length).toBe(2);
-        expect(Object.keys((validationErrors.widgetMaterial as ValidationErrors).widgetColor).length).toBe(1);
+        widgetArray.push(widget);
+    }
+
+    const validationErrorArray = await MetaValidator.validate(widgetArray);
+    for (const validationError of validationErrorArray) {
+        expect(Object.keys(validationError).length).toBe(2);
     }
 });

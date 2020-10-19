@@ -2,7 +2,7 @@ import {MetaValidator} from "../../MetaValidator";
 import {isAlpha} from "../../validators/is-alpha";
 
 export function IsAlpha(): Function {
-    return function (target: Object, propertyKey: string | symbol): void {
+    return (target: Object, propertyKey: string | symbol): void => {
         MetaValidator.addMetadata({
             // Metadata
             target: target,
@@ -10,6 +10,7 @@ export function IsAlpha(): Function {
             // Context
             className: target.constructor.name,
             validator: {
+                decoratorName: IsAlpha.name,
                 message: `${propertyKey.toString()} must only contain letters.`,
                 method: async (input: any) => {
                     return isAlpha(input);

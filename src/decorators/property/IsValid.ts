@@ -1,7 +1,7 @@
 import {MetaValidator} from "../../MetaValidator";
 
 export function IsValid(): Function {
-    return function (target: Object, propertyKey: string | symbol): void {
+    return (target: Object, propertyKey: string | symbol): void => {
         MetaValidator.addMetadata({
             // Metadata
             target: target,
@@ -9,6 +9,7 @@ export function IsValid(): Function {
             // Context
             className: target.constructor.name,
             validator: {
+                decoratorName: IsValid.name,
                 message: `This property is always valid.`,
                 method: async (input: any) => {
                     return true;

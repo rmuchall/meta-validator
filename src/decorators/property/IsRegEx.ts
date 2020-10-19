@@ -2,7 +2,7 @@ import {MetaValidator} from "../../MetaValidator";
 import {isRegEx} from "../../validators/is-reg-ex";
 
 export function IsRegEx(): Function {
-    return function (target: Object, propertyKey: string | symbol): void {
+    return (target: Object, propertyKey: string | symbol): void => {
         MetaValidator.addMetadata({
             // Metadata
             target: target,
@@ -10,6 +10,7 @@ export function IsRegEx(): Function {
             // Context
             className: target.constructor.name,
             validator: {
+                decoratorName: isRegEx.name,
                 message: `${propertyKey.toString()} is not a valid regular expression.`,
                 method: async (input: any) => {
                     return isRegEx(input);

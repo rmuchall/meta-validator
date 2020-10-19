@@ -2,7 +2,7 @@ import {MetaValidator} from "../../MetaValidator";
 import {isEmpty} from "../../validators/is-empty";
 
 export function IsNotEmpty(): Function {
-    return function (target: Object, propertyKey: string | symbol): void {
+    return (target: Object, propertyKey: string | symbol): void => {
         MetaValidator.addMetadata({
             // Metadata
             target: target,
@@ -10,6 +10,7 @@ export function IsNotEmpty(): Function {
             // Context
             className: target.constructor.name,
             validator: {
+                decoratorName: IsNotEmpty.name,
                 message: `${propertyKey.toString()} is required.`,
                 method: async (input: any) => {
                     return !isEmpty(input);

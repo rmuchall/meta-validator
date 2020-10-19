@@ -59,7 +59,9 @@ test("throw error", () => {
                 // Context
                 className: target.constructor.name,
                 validator: {
+                    decoratorName: "ThrowError",
                     message: "this is a test validation message",
+                    options: [],
                     method: async (input: any) => {
                         throw new Error("ThrowError decorator");
                     }

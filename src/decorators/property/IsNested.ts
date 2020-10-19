@@ -1,7 +1,7 @@
 import {MetaValidator} from "../../MetaValidator";
 
 export function IsNested(): Function {
-    return function (target: Object, propertyKey: string | symbol): void {
+    return (target: Object, propertyKey: string | symbol): void => {
         MetaValidator.addMetadata({
             // Metadata
             target: target,

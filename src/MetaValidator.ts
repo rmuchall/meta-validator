@@ -2,10 +2,12 @@ import {ValidationContext} from "./interfaces/ValidationContext";
 import {ValidatorOptions} from "./interfaces/ValidatorOptions";
 import {Metadata} from "./interfaces/Metadata";
 import {ValidationErrors} from "./interfaces/ValidationErrors";
+import {formatValidationError} from "./utilities/string-utils";
 
 export abstract class MetaValidator {
     private static metadata: Record<string, Metadata> = {};
     private static circularCheck: Set<Record<string, any>> = new Set<Record<string, any>>();
+    static customValidationMessages: Record<string, string> = {};
 
     static async validate(obj: Record<string, any>[], options?: ValidatorOptions): Promise<ValidationErrors[]>
     static async validate(obj: Record<string, any>, options?: ValidatorOptions): Promise<ValidationErrors>
@@ -87,14 +89,26 @@ export abstract class MetaValidator {
                     throw new Error("No validator specified");
                 }
 
-                // Validator method
+                // Execute validator
                 const isValid: boolean = await context.validator.method(obj[propertyKey], obj, context.validator.options);
+
                 if (!isValid) {
                     if (!validationErrors[context.propertyKey]) {
                         validationErrors[context.propertyKey] = [];
                     }
 
-                    (validationErrors[context.propertyKey] as string[]).push(context.validator.message);
+                    let validationError: string;
+                    if (this.customValidationMessages[context.validator.decoratorName]) {
+                        // Custom validation error message
+                        validationError = formatValidationError(this.customValidationMessages[context.validator.decoratorName],
+                            context.propertyKey, obj[propertyKey], context.validator.options);
+                    } else {
+                        // Default validation error message
+                        validationError = formatValidationError(context.validator.message,
+                            context.propertyKey, obj[propertyKey], context.validator.options);
+                    }
+
+                    (validationErrors[context.propertyKey] as string[]).push(validationError);
                 }
 
             }
@@ -103,7 +117,7 @@ export abstract class MetaValidator {
         return validationErrors;
     }
 
-    private static async validateArray(objArray: Record<string, any>[], options: ValidatorOptions) {
+    private static async validateArray(objArray: Record<string, any>[], options: ValidatorOptions): Promise<ValidationErrors[]> {
         const validationErrorArray: ValidationErrors[] = [];
         for (const obj of objArray) {
             validationErrorArray.push(await MetaValidator.validateObject(obj, options));

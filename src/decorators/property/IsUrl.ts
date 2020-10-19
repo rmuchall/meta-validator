@@ -3,7 +3,7 @@ import {isUrl} from "../../validators/is-url";
 import {IsUrlOptions} from "../../interfaces/options/IsUrlOptions";
 
 export function IsUrl(options?: IsUrlOptions): Function {
-    return function (target: Object, propertyKey: string | symbol): void {
+    return (target: Object, propertyKey: string | symbol): void => {
         MetaValidator.addMetadata({
             // Metadata
             target: target,
@@ -11,6 +11,7 @@ export function IsUrl(options?: IsUrlOptions): Function {
             // Context
             className: target.constructor.name,
             validator: {
+                decoratorName: IsUrl.name,
                 message: `${propertyKey.toString()} must be a valid URL.`,
                 method: async (input: any) => {
                     return isUrl(input, options);

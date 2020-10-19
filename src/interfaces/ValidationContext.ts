@@ -2,10 +2,10 @@ import {Validator} from "./Validator";
 
 export interface ValidationContext {
     // Metadata
-    target: Object;
-    propertyKey: string;
+    target: Object; // The constructor of the class to be validated
+    propertyKey: string; // The object property key to be validated
     // Context
-    className: string;
-    isNested?: boolean;
-    validator?: Validator;
+    className: string; // The object to be validated class name
+    isNested?: boolean; // Nested validation?
+    validator?: Validator; // The validator to execute
 }

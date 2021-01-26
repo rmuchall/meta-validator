@@ -12,8 +12,8 @@ export function IsNumber(): Function {
             validator: {
                 decoratorName: IsNumber.name,
                 message: `${propertyKey.toString()} must be a number.`,
-                method: async (input: any) => {
-                    return isNumber(input);
+                method: (input: any) => {
+                    return Promise.resolve(isNumber(input));
                 }
             }
         });

@@ -9,9 +9,9 @@ export abstract class MetaValidator {
     private static circularCheck: Set<Record<string, any>> = new Set<Record<string, any>>();
     static customValidationMessages: Record<string, string> = {};
 
-    static async validate(obj: Record<string, any>[], options?: ValidatorOptions): Promise<ValidationErrors[]>
-    static async validate(obj: Record<string, any>, options?: ValidatorOptions): Promise<ValidationErrors>
-    static async validate(obj: Record<string, any> | Record<string, any>[], options?: ValidatorOptions): Promise<ValidationErrors[] | ValidationErrors> {
+    static validate(obj: Record<string, any>[], options?: ValidatorOptions): Promise<ValidationErrors[]>
+    static validate(obj: Record<string, any>, options?: ValidatorOptions): Promise<ValidationErrors>
+    static validate(obj: Record<string, any> | Record<string, any>[], options?: ValidatorOptions): Promise<ValidationErrors[] | ValidationErrors> {
         MetaValidator.circularCheck.clear();
 
         if (!options) {

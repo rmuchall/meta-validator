@@ -13,8 +13,8 @@ export function IsIp(options?: IsIpOptions): Function {
             validator: {
                 decoratorName: IsIp.name,
                 message: `${propertyKey.toString()} must be a valid ip address.`,
-                method: async (input: any) => {
-                    return isIp(input, options);
+                method: (input: any) => {
+                    return Promise.resolve(isIp(input, options));
                 }
             }
         });

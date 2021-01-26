@@ -10,8 +10,8 @@ export function IsAlphanumeric(): Function {
             validator: {
                 decoratorName: IsAlphanumeric.name,
                 message: `${propertyKey.toString()} must contain only letters or numbers.`,
-                method: async (input: any) => {
-                    return isAlphanumeric(input);
+                method: (input: any) => {
+                    return Promise.resolve(isAlphanumeric(input));
                 }
             }
         });

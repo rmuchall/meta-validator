@@ -12,8 +12,8 @@ export function IsRegEx(): Function {
             validator: {
                 decoratorName: isRegEx.name,
                 message: `${propertyKey.toString()} is not a valid regular expression.`,
-                method: async (input: any) => {
-                    return isRegEx(input);
+                method: (input: any) => {
+                    return Promise.resolve(isRegEx(input));
                 }
             }
         });

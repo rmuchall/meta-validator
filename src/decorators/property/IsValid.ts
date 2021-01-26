@@ -11,8 +11,8 @@ export function IsValid(): Function {
             validator: {
                 decoratorName: IsValid.name,
                 message: `This property is always valid.`,
-                method: async (input: any) => {
-                    return true;
+                method: (input: any) => {
+                    return Promise.resolve(true);
                 }
             }
         });

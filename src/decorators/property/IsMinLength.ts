@@ -10,8 +10,8 @@ export function IsMinLength(minLength: number): Function {
             validator: {
                 decoratorName: IsMinLength.name,
                 message: `${propertyKey.toString()} must have at least ${minLength} characters.`,
-                method: async (input: any) => {
-                    return isString(input) && input.length >= minLength;
+                method: (input: any) => {
+                    return Promise.resolve(isString(input) && input.length >= minLength);
                 }
             }
         });

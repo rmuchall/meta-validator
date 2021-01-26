@@ -13,8 +13,8 @@ export function IsUrl(options?: IsUrlOptions): Function {
             validator: {
                 decoratorName: IsUrl.name,
                 message: `${propertyKey.toString()} must be a valid URL.`,
-                method: async (input: any) => {
-                    return isUrl(input, options);
+                method: (input: any) => {
+                    return Promise.resolve(isUrl(input, options));
                 }
             }
         });

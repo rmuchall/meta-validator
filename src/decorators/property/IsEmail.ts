@@ -12,8 +12,8 @@ export function IsEmail(): Function {
             validator: {
                 decoratorName: IsEmail.name,
                 message: `${propertyKey.toString()} must be a valid email address.`,
-                method: async (input: any) => {
-                    return isEmail(input);
+                method: (input: any) => {
+                    return Promise.resolve(isEmail(input));
                 }
             }
         });

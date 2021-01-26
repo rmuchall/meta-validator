@@ -10,11 +10,11 @@ export function IsEqualTo(propertyKeyToCompare: string): Function {
                 decoratorName: IsEqualTo.name,
                 message: `${propertyKey.toString()} must be equal to ${propertyKeyToCompare}.`,
                 options: [propertyKeyToCompare],
-                method: async (input: any, obj?: Record<string, any>) => {
+                method: (input: any, obj?: Record<string, any>) => {
                     if (obj)
-                        return obj[propertyKeyToCompare] === input;
+                        return Promise.resolve(obj[propertyKeyToCompare] === input);
                     else
-                        return false;
+                        return Promise.resolve(false);
                 }
             }
         });

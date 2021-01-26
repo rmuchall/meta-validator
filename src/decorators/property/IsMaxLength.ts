@@ -12,8 +12,8 @@ export function IsMaxLength(maxLength: number): Function {
             validator: {
                 decoratorName: IsMaxLength.name,
                 message: `${propertyKey.toString()} must be less than ${maxLength} characters.`,
-                method: async (input: any) => {
-                    return isString(input) && input.length <= maxLength;
+                method: (input: any) => {
+                    return Promise.resolve(isString(input) && input.length <= maxLength);
                 }
             }
         });

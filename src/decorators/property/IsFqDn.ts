@@ -13,8 +13,8 @@ export function IsFqDn(options?: IsFqdnOptions): Function {
             validator: {
                 decoratorName: IsFqDn.name,
                 message: `${propertyKey.toString()} must be a fully qualified domain name.`,
-                method: async (input: any) => {
-                    return isFqdn(input, options);
+                method: (input: any) => {
+                    return Promise.resolve(isFqdn(input, options));
                 }
             }
         });

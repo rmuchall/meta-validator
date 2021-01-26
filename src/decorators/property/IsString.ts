@@ -12,8 +12,8 @@ export function IsString(): Function {
             validator: {
                 decoratorName: IsString.name,
                 message: `${propertyKey.toString()} must only contain letters.`,
-                method: async (input: any) => {
-                    return isString(input);
+                method: (input: any) => {
+                    return Promise.resolve(isString(input));
                 }
             }
         });

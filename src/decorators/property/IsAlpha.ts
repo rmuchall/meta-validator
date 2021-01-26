@@ -12,8 +12,8 @@ export function IsAlpha(): Function {
             validator: {
                 decoratorName: IsAlpha.name,
                 message: `${propertyKey.toString()} must only contain letters.`,
-                method: async (input: any) => {
-                    return isAlpha(input);
+                method: (input: any) => {
+                    return Promise.resolve(isAlpha(input));
                 }
             }
         });

@@ -62,7 +62,7 @@ test("throw error", () => {
                     decoratorName: "ThrowError",
                     message: "this is a test validation message",
                     options: [],
-                    method: async (input: any) => {
+                    method: (input: any) => {
                         throw new Error("ThrowError decorator");
                     }
                 }

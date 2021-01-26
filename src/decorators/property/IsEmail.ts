@@ -11,7 +11,7 @@ export function IsEmail(): Function {
             className: target.constructor.name,
             validator: {
                 decoratorName: IsEmail.name,
-                message: `${propertyKey.toString()} must only contain letters.`,
+                message: `${propertyKey.toString()} must be a valid email address.`,
                 method: async (input: any) => {
                     return isEmail(input);
                 }

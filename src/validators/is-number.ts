@@ -1,3 +1,3 @@
-export function isNumber(input: any): boolean {
-    return !isNaN(parseFloat(input)) && isFinite(input);
+export function isNumber(input: unknown): boolean {
+    return !isNaN(parseFloat(input as string)) && isFinite(input as number);
 }

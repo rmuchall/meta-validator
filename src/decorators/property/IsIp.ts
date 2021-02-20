@@ -2,8 +2,8 @@ import {MetaValidator} from "../../MetaValidator";
 import {isIp} from "../../validators/is-ip";
 import {IsIpOptions} from "../../interfaces/options/IsIpOptions";
 
-export function IsIp(options?: IsIpOptions): Function {
-    return (target: Object, propertyKey: string | symbol): void => {
+export function IsIp(options?: IsIpOptions): PropertyDecorator {
+    return (target, propertyKey) => {
         MetaValidator.addMetadata({
             // Metadata
             target: target,

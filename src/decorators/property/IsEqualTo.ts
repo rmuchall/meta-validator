@@ -1,7 +1,7 @@
 import {MetaValidator} from "../../MetaValidator";
 
-export function IsEqualTo(propertyKeyToCompare: string): Function {
-    return (target: Object, propertyKey: string | symbol): void => {
+export function IsEqualTo(propertyKeyToCompare: string): PropertyDecorator {
+    return (target, propertyKey) => {
         MetaValidator.addMetadata({
             target: target,
             propertyKey: propertyKey.toString(),
@@ -11,10 +11,11 @@ export function IsEqualTo(propertyKeyToCompare: string): Function {
                 message: `${propertyKey.toString()} must be equal to ${propertyKeyToCompare}.`,
                 options: [propertyKeyToCompare],
                 method: (input: any, obj?: Record<string, any>) => {
-                    if (obj)
+                    if (obj) {
                         return Promise.resolve(obj[propertyKeyToCompare] === input);
-                    else
-                        return Promise.resolve(false);
+                    }
+
+                    return Promise.resolve(false);
                 }
             }
         });

@@ -11,8 +11,8 @@ test("validate non-object: undefined", () => {
         name: string;
     }
 
-    expect(async () => {
-        await MetaValidator.validate(undefined as any);
+    void expect(() => {
+        return MetaValidator.validate(undefined as any);
     }).rejects.toThrow();
 });
 
@@ -22,8 +22,8 @@ test("validate non-object: null", () => {
         name: string;
     }
 
-    expect(async () => {
-        await MetaValidator.validate(null as any);
+    void expect(() => {
+        return MetaValidator.validate(null as any);
     }).rejects.toThrow();
 });
 
@@ -33,8 +33,8 @@ test("validate non-object: string", () => {
         name: string;
     }
 
-    expect(async () => {
-        await MetaValidator.validate("test" as any);
+    void expect(() => {
+        return MetaValidator.validate("test" as any);
     }).rejects.toThrow();
 });
 
@@ -43,15 +43,15 @@ test("no metadata", () => {
         name: string;
     }
 
-    expect(async () => {
+    void expect(() => {
         const widget = new Widget();
-        await MetaValidator.validate(widget);
+        return MetaValidator.validate(widget);
     }).rejects.toThrow();
 });
 
 test("throw error", () => {
-    function ThrowError(): Function {
-        return function (target: Object, propertyKey: string | symbol): void {
+    function ThrowError(): PropertyDecorator {
+        return (target, propertyKey) => {
             MetaValidator.addMetadata({
                 // Metadata
                 target: target,
@@ -75,9 +75,9 @@ test("throw error", () => {
         name: string;
     }
 
-    expect(async () => {
+    void expect(() => {
         const widget: Widget = Object.assign<Widget, Widget>(new Widget(), {name: "this is a test"});
-        const validationErrors = await MetaValidator.validate(widget);
+        return MetaValidator.validate(widget);
     }).rejects.toThrow();
 });
 
@@ -91,8 +91,8 @@ test("extraneous properties", () => {
     widget.name = "test";
     (widget as any).extra = "extra";
 
-    expect(async () => {
-        await MetaValidator.validate(widget);
+    void expect(() => {
+        return MetaValidator.validate(widget);
     }).rejects.toThrow();
 });
 
@@ -108,8 +108,8 @@ test("proto vulnerability", () => {
         // Empty
     };
 
-    expect(async () => {
-        await MetaValidator.validate(widget);
+    void expect(() => {
+        return MetaValidator.validate(widget);
     }).rejects.toThrow();
 });
 
@@ -151,7 +151,7 @@ test("circular dependencies", () => {
     widget.detail = widgetDetail;
     widget.detail.circular = widgetDetail;
 
-    expect(async () => {
-        await MetaValidator.validate(widget);
+    void expect(() => {
+        return MetaValidator.validate(widget);
     }).rejects.toThrow();
 });

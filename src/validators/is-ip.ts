@@ -22,7 +22,7 @@ const v6RegExp = new RegExp("^(" +
     `(?::((?::${v6Seg}){0,5}:${v4Str}|(?::${v6Seg}){1,7}|:))` +
     ")(%[0-9a-zA-Z]{1,})?$");
 
-export function isIp4(input: any): boolean {
+export function isIp4(input: unknown): boolean {
     if (!isString(input)) {
         return false;
     }
@@ -30,7 +30,7 @@ export function isIp4(input: any): boolean {
     return v4RegExp.test(input);
 }
 
-export function isIp6(input: any): boolean {
+export function isIp6(input: unknown): boolean {
     if (!isString(input)) {
         return false;
     }
@@ -38,7 +38,7 @@ export function isIp6(input: any): boolean {
     return v6RegExp.test(input);
 }
 
-export function isIp(input: any, options?: IsIpOptions): boolean {
+export function isIp(input: unknown, options?: IsIpOptions): boolean {
     if (!isString(input)) {
         return false;
     }

@@ -1,8 +1,8 @@
 import {MetaValidator} from "../../MetaValidator";
 import {isString} from "../../validators/is-string";
 
-export function IsMaxLength(maxLength: number): Function {
-    return (target: Object, propertyKey: string | symbol): void => {
+export function IsMaxLength(maxLength: number): PropertyDecorator {
+    return (target, propertyKey) => {
         MetaValidator.addMetadata({
             // Metadata
             target: target,

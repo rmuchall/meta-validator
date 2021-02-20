@@ -4,7 +4,7 @@ import {isEmpty} from "./is-empty";
 
 // From ValidatorJs
 // https://github.com/validatorjs/validator.js
-export function isFqdn(input: any, options?: IsFqdnOptions): boolean {
+export function isFqdn(input: unknown, options?: IsFqdnOptions): boolean {
     if (!options) {
         options = {
             allowTrailingDot: false,
@@ -16,7 +16,7 @@ export function isFqdn(input: any, options?: IsFqdnOptions): boolean {
     if (isEmpty(input)) {
         return false;
     }
-    
+
     if (!isString(input)) {
         return false;
     }
@@ -27,7 +27,7 @@ export function isFqdn(input: any, options?: IsFqdnOptions): boolean {
     }
 
     // Split on .
-    const parts = input.split(".");
+    const parts = (input as string).split(".");
 
     // Check length
     for (let i = 0; i < parts.length; i++) {
@@ -57,7 +57,7 @@ export function isFqdn(input: any, options?: IsFqdnOptions): boolean {
         part = parts[i];
 
         if (options.allowUnderscores) {
-            part = part.replace(/_/g, '');
+            part = part.replace(/_/g, "");
         }
 
         if (!/^[a-z\u00a1-\uffff0-9-]+$/i.test(part)) {

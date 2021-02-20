@@ -3,13 +3,13 @@ import {isFqdn} from "./is-fqdn";
 import {IsUrlOptions} from "../interfaces/options/IsUrlOptions";
 import {isString} from "./is-string";
 
-export function isUrl(input: any, options?: IsUrlOptions): boolean {
+export function isUrl(input: unknown, options?: IsUrlOptions): boolean {
     // Set default options?
     if (!options) {
         // https://url.spec.whatwg.org/#special-scheme
         options = {
             validProtocols: ["ftp", "file", "http", "https", "ws", "wss"]
-        }
+        };
     }
 
     // Check for input

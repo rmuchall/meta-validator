@@ -2,8 +2,8 @@ import {MetaValidator} from "../../MetaValidator";
 import {isUrl} from "../../validators/is-url";
 import {IsUrlOptions} from "../../interfaces/options/IsUrlOptions";
 
-export function IsUrl(options?: IsUrlOptions): Function {
-    return (target: Object, propertyKey: string | symbol): void => {
+export function IsUrl(options?: IsUrlOptions): PropertyDecorator {
+    return (target, propertyKey) => {
         MetaValidator.addMetadata({
             // Metadata
             target: target,

@@ -1,4 +1,4 @@
-export function formatValidationError(message: string, propertyKey: string, value: string, options?: any): string {
+export function formatValidationError(message: string, propertyKey: string, value: string, options?: any[]): string {
     let errorMessage = message;
     errorMessage = errorMessage.replace("$propertyKey", propertyKey);
     errorMessage = errorMessage.replace("$value", value);

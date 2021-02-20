@@ -1,6 +1,6 @@
 import {isString} from "./is-string";
 
-export function isAlphanumeric(input: any): boolean {
+export function isAlphanumeric(input: unknown): boolean {
     if (!isString(input)) {
         return false;
     }

@@ -1,7 +1,7 @@
 import {isString} from "./is-string";
 import {isEmpty} from "./is-empty";
 
-export function isRegEx(input: any): boolean {
+export function isRegEx(input: unknown): boolean {
     if (isEmpty(input)) {
         return false;
     }

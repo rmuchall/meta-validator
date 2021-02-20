@@ -1,8 +1,8 @@
 import {MetaValidator} from "../../MetaValidator";
 import {isEmail} from "../../validators/is-email";
 
-export function IsEmail(): Function {
-    return (target: Object, propertyKey: string | symbol): void => {
+export function IsEmail(): PropertyDecorator {
+    return (target, propertyKey) => {
         MetaValidator.addMetadata({
             // Metadata
             target: target,

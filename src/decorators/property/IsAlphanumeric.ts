@@ -1,8 +1,8 @@
 import {MetaValidator} from "../../MetaValidator";
 import {isAlphanumeric} from "../../validators/is-alphanumeric";
 
-export function IsAlphanumeric(): Function {
-    return (target: Object, propertyKey: string | symbol): void => {
+export function IsAlphanumeric(): PropertyDecorator {
+    return (target, propertyKey) => {
         MetaValidator.addMetadata({
             target: target,
             propertyKey: propertyKey.toString(),

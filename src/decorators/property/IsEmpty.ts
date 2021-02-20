@@ -1,8 +1,8 @@
 import {MetaValidator} from "../../MetaValidator";
 import {isEmpty} from "../../validators/is-empty";
 
-export function IsEmpty(): Function {
-    return (target: Object, propertyKey: string | symbol): void => {
+export function IsEmpty(): PropertyDecorator {
+    return (target, propertyKey) => {
         MetaValidator.addMetadata({
             // Metadata
             target: target,

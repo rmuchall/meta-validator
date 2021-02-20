@@ -1,8 +1,8 @@
 import {MetaValidator} from "../../MetaValidator";
 import {isRegEx} from "../../validators/is-reg-ex";
 
-export function IsRegEx(): Function {
-    return (target: Object, propertyKey: string | symbol): void => {
+export function IsRegEx(): PropertyDecorator {
+    return (target, propertyKey) => {
         MetaValidator.addMetadata({
             // Metadata
             target: target,

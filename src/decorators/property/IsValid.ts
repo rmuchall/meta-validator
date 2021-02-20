@@ -1,7 +1,7 @@
 import {MetaValidator} from "../../MetaValidator";
 
-export function IsValid(): Function {
-    return (target: Object, propertyKey: string | symbol): void => {
+export function IsValid(): PropertyDecorator {
+    return (target, propertyKey) => {
         MetaValidator.addMetadata({
             // Metadata
             target: target,
@@ -10,7 +10,7 @@ export function IsValid(): Function {
             className: target.constructor.name,
             validator: {
                 decoratorName: IsValid.name,
-                message: `This property is always valid.`,
+                message: "This property is always valid.",
                 method: (input: any) => {
                     return Promise.resolve(true);
                 }

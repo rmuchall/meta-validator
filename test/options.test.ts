@@ -64,5 +64,5 @@ test("custom validation errors", async () => {
         "IsEqualTo": "CUSTOM: $propertyKey must be equal to $options0"
     };
     const validationErrors = await MetaValidator.validate(widget, {isSkipMissingProperties: true});
-    expect((validationErrors.sameName as string[])[0]).toBe("CUSTOM: sameName must be equal to name");
+    expect((validationErrors["sameName"] as string[])[0]).toBe("CUSTOM: sameName must be equal to name");
 });

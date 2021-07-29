@@ -60,9 +60,43 @@ test("custom validation errors", async () => {
     }
 
     const widget: Widget = Object.assign<Widget, Widget>(new Widget(), {name: "Doodad", sameName: "Thingymabob"});
-    MetaValidator.customValidationMessages = {
-        "IsEqualTo": "CUSTOM: $propertyKey must be equal to $options0"
-    };
-    const validationErrors = await MetaValidator.validate(widget, {isSkipMissingProperties: true});
+    const validationErrors = await MetaValidator.validate(widget, {
+        isSkipMissingProperties: true,
+        customErrorMessages: {
+            "IsEqualTo": "CUSTOM: $propertyKey must be equal to $options0"
+        }
+    });
     expect((validationErrors["sameName"] as string[])[0]).toBe("CUSTOM: sameName must be equal to name");
+});
+
+test("custom validation error formatter", async () => {
+    class Widget {
+        @IsValid()
+        name: any;
+
+        @IsEqualTo("name")
+        sameName: any;
+    }
+
+    const widget: Widget = Object.assign<Widget, Widget>(new Widget(), {name: "Doodad", sameName: "Thingymabob"});
+    const validationErrors = await MetaValidator.validate(widget, {
+        isSkipMissingProperties: true,
+        customErrorMessageFormatter: (data) => {
+            let errorMessage = data.message;
+            errorMessage = errorMessage.replace("$propertyKey", data.propertyKey.toUpperCase());
+            errorMessage = errorMessage.replace("$propertyValue", data.propertyValue);
+
+            if (data.options) {
+                for (let i = 0; i < data.options.length; i++) {
+                    errorMessage = errorMessage.replace(`$options${i}`, data.options[i]);
+                }
+            }
+
+            return errorMessage;
+        },
+        customErrorMessages: {
+            "IsEqualTo": "CUSTOM: $propertyKey must be equal to $options0"
+        }
+    });
+    expect((validationErrors["sameName"] as string[])[0]).toBe("CUSTOM: SAMENAME must be equal to name");
 });

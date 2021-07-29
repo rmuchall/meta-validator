@@ -1,34 +1,34 @@
 import {ValidationContext} from "./interfaces/ValidationContext";
-import {ValidatorOptions} from "./interfaces/ValidatorOptions";
+import {GlobalOptions} from "./interfaces/GlobalOptions";
 import {Metadata} from "./interfaces/Metadata";
 import {ValidationErrors} from "./interfaces/ValidationErrors";
-import {formatValidationError} from "./utilities/string-utils";
+import {validationErrorFormatter} from "./utilities/validation-error-formatter";
+import {FormatterData} from "./interfaces/FormatterData";
 
 export abstract class MetaValidator {
     private static metadata: Record<string, Metadata> = {};
     private static circularCheck: Set<Record<string, any>> = new Set<Record<string, any>>();
-    static customValidationMessages: Record<string, string> = {};
 
-    static validate(obj: Record<string, any>[], options?: ValidatorOptions): Promise<ValidationErrors[]>
-    static validate(obj: Record<string, any>, options?: ValidatorOptions): Promise<ValidationErrors>
-    static validate(obj: Record<string, any> | Record<string, any>[], options?: ValidatorOptions): Promise<ValidationErrors[] | ValidationErrors> {
+    static validate(obj: Record<string, any>[], options?: GlobalOptions): Promise<ValidationErrors[]>
+    static validate(obj: Record<string, any>, options?: GlobalOptions): Promise<ValidationErrors>
+    static validate(obj: Record<string, any> | Record<string, any>[], options?: GlobalOptions): Promise<ValidationErrors[] | ValidationErrors> {
         MetaValidator.circularCheck.clear();
 
-        if (!options) {
-            // Set default options
-            options = {
-                isSkipMissingProperties: false
-            };
-        }
+        // Set default globalOptions
+        const globalOptions = Object.assign<GlobalOptions, Partial<GlobalOptions>>({}, {
+            isSkipMissingProperties: options?.isSkipMissingProperties || false,
+            customErrorMessageFormatter: options?.customErrorMessageFormatter,
+            customErrorMessages: options?.customErrorMessages || {}
+        });
 
         if (Array.isArray(obj)) {
-            return MetaValidator.validateArray(obj, options);
+            return MetaValidator.validateArray(obj, globalOptions);
         }
 
-        return MetaValidator.validateObject(obj, options);
+        return MetaValidator.validateObject(obj, globalOptions);
     }
 
-    private static async validateObject(obj: Record<string, any>, options: ValidatorOptions): Promise<ValidationErrors> {
+    private static async validateObject(obj: Record<string, any>, globalOptions: GlobalOptions): Promise<ValidationErrors> {
         // Check for circular dependencies
         if (MetaValidator.circularCheck.has(obj)) {
             throw new Error("Object has a circular dependency");
@@ -58,7 +58,7 @@ export abstract class MetaValidator {
         for (const propertyKey of Object.keys(MetaValidator.metadata[className])) {
             // Skip missing properties?
             if (!Object.hasOwnProperty.call(obj, propertyKey) &&
-                options.isSkipMissingProperties) {
+                globalOptions.isSkipMissingProperties) {
                 continue;
             }
 
@@ -71,12 +71,12 @@ export abstract class MetaValidator {
                 if (context.isNested) {
                     let nestedValidationErrors: ValidationErrors | ValidationErrors[];
                     if (Array.isArray(obj[propertyKey])) {
-                        nestedValidationErrors = await MetaValidator.validateArray(obj[propertyKey], options);
+                        nestedValidationErrors = await MetaValidator.validateArray(obj[propertyKey], globalOptions);
                         if (nestedValidationErrors.length > 0) {
                             validationErrors[context.propertyKey] = nestedValidationErrors;
                         }
                     } else {
-                        nestedValidationErrors = await MetaValidator.validateObject(obj[propertyKey], options);
+                        nestedValidationErrors = await MetaValidator.validateObject(obj[propertyKey], globalOptions);
                         if (Object.keys(nestedValidationErrors).length > 0) {
                             validationErrors[context.propertyKey] = nestedValidationErrors;
                         }
@@ -97,18 +97,26 @@ export abstract class MetaValidator {
                         validationErrors[context.propertyKey] = [];
                     }
 
-                    let validationError: string;
-                    if (this.customValidationMessages[context.validator.decoratorName]) {
-                        // Custom validation error message
-                        validationError = formatValidationError(this.customValidationMessages[context.validator.decoratorName],
-                            context.propertyKey, obj[propertyKey], context.validator.options);
+                    // Choose error formatter
+                    let errorFormatter: (data: FormatterData) => string;
+                    if (globalOptions.customErrorMessageFormatter) {
+                        // Custom validation error formatter
+                        errorFormatter = globalOptions.customErrorMessageFormatter;
                     } else {
-                        // Default validation error message
-                        validationError = formatValidationError(context.validator.message,
-                            context.propertyKey, obj[propertyKey], context.validator.options);
+                        // Default validation error formatter
+                        errorFormatter = validationErrorFormatter;
                     }
 
-                    (validationErrors[context.propertyKey] as string[]).push(validationError);
+                    // Build formatter data
+                    const errorFormatterData: FormatterData = {
+                        message: globalOptions.customErrorMessages![context.validator.decoratorName] || context.validator.message,
+                        propertyKey: context.propertyKey,
+                        propertyValue: obj[propertyKey],
+                        options: context.validator.options
+                    };
+
+                    // Add formatted validation error message
+                    (validationErrors[context.propertyKey] as string[]).push(errorFormatter(errorFormatterData));
                 }
 
             }
@@ -117,7 +125,7 @@ export abstract class MetaValidator {
         return validationErrors;
     }
 
-    private static async validateArray(objArray: Record<string, any>[], options: ValidatorOptions): Promise<ValidationErrors[]> {
+    private static async validateArray(objArray: Record<string, any>[], options: GlobalOptions): Promise<ValidationErrors[]> {
         const validationErrorArray: ValidationErrors[] = [];
         for (const obj of objArray) {
             validationErrorArray.push(await MetaValidator.validateObject(obj, options));

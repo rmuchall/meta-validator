@@ -18,15 +18,18 @@ export * from "./decorators/property/IsString";
 export * from "./decorators/property/IsUrl";
 export * from "./decorators/property/IsValid";
 // interfaces
+export * from "./interfaces/FormatterData";
+export * from "./interfaces/GlobalOptions";
 export * from "./interfaces/Metadata";
 export * from "./interfaces/ValidationContext";
 export * from "./interfaces/ValidationErrors";
 export * from "./interfaces/Validator";
-export * from "./interfaces/ValidatorOptions";
 // interfaces/options
 export * from "./interfaces/options/IsFqdnOptions";
 export * from "./interfaces/options/IsIpOptions";
 export * from "./interfaces/options/IsUrlOptions";
+// utilities
+export * from "./utilities/validation-error-formatter";
 // validators
 export * from "./validators/is-alpha";
 export * from "./validators/is-alphanumeric";

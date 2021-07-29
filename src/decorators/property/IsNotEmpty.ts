@@ -11,7 +11,7 @@ export function IsNotEmpty(): PropertyDecorator {
             className: target.constructor.name,
             validator: {
                 decoratorName: IsNotEmpty.name,
-                message: `${propertyKey.toString()} is required.`,
+                message: "$propertyKey is required.",
                 method: (input: any) => {
                     return Promise.resolve(!isEmpty(input));
                 }

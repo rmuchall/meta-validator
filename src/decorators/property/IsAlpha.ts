@@ -11,7 +11,7 @@ export function IsAlpha(): PropertyDecorator {
             className: target.constructor.name,
             validator: {
                 decoratorName: IsAlpha.name,
-                message: `${propertyKey.toString()} must only contain letters.`,
+                message: "$propertyKey must only contain letters.",
                 method: (input: any) => {
                     return Promise.resolve(isAlpha(input));
                 }

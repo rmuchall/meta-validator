@@ -1,5 +1,9 @@
 import {FormatterData} from "../interfaces/FormatterData";
 
+// Tokens:
+// $propertyKey
+// $propertyValue
+// $options<number>
 export function validationErrorFormatter(data: FormatterData): string {
     let errorMessage = data.message;
     errorMessage = errorMessage.replace("$propertyKey", data.propertyKey);

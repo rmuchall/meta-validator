@@ -12,7 +12,7 @@ export function IsFqDn(options?: IsFqdnOptions): PropertyDecorator {
             className: target.constructor.name,
             validator: {
                 decoratorName: IsFqDn.name,
-                message: `${propertyKey.toString()} must be a fully qualified domain name.`,
+                message: "$propertyKey must be a fully qualified domain name.",
                 method: (input: any) => {
                     return Promise.resolve(isFqdn(input, options));
                 }

@@ -8,7 +8,7 @@ export function IsEqualTo(propertyKeyToCompare: string): PropertyDecorator {
             className: target.constructor.name,
             validator: {
                 decoratorName: IsEqualTo.name,
-                message: `${propertyKey.toString()} must be equal to ${propertyKeyToCompare}.`,
+                message: "$propertyKey must be equal to $option0.",
                 options: [propertyKeyToCompare],
                 method: (input: any, obj?: Record<string, any>) => {
                     if (obj) {

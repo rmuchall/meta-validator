@@ -11,7 +11,7 @@ export function IsRegEx(): PropertyDecorator {
             className: target.constructor.name,
             validator: {
                 decoratorName: isRegEx.name,
-                message: `${propertyKey.toString()} is not a valid regular expression.`,
+                message: "$propertyKey is not a valid regular expression.",
                 method: (input: any) => {
                     return Promise.resolve(isRegEx(input));
                 }

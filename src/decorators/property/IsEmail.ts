@@ -11,7 +11,7 @@ export function IsEmail(): PropertyDecorator {
             className: target.constructor.name,
             validator: {
                 decoratorName: IsEmail.name,
-                message: `${propertyKey.toString()} must be a valid email address.`,
+                message: "$propertyKey must be a valid email address.",
                 method: (input: any) => {
                     return Promise.resolve(isEmail(input));
                 }

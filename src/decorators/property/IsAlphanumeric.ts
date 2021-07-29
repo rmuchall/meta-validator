@@ -9,7 +9,7 @@ export function IsAlphanumeric(): PropertyDecorator {
             className: target.constructor.name,
             validator: {
                 decoratorName: IsAlphanumeric.name,
-                message: `${propertyKey.toString()} must contain only letters or numbers.`,
+                message: "$propertyKey must contain only letters or numbers.",
                 method: (input: any) => {
                     return Promise.resolve(isAlphanumeric(input));
                 }

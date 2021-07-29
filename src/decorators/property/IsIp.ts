@@ -12,7 +12,7 @@ export function IsIp(options?: IsIpOptions): PropertyDecorator {
             className: target.constructor.name,
             validator: {
                 decoratorName: IsIp.name,
-                message: `${propertyKey.toString()} must be a valid ip address.`,
+                message: "$propertyKey must be a valid ip address.",
                 method: (input: any) => {
                     return Promise.resolve(isIp(input, options));
                 }

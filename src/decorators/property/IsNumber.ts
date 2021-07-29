@@ -11,7 +11,7 @@ export function IsNumber(): PropertyDecorator {
             className: target.constructor.name,
             validator: {
                 decoratorName: IsNumber.name,
-                message: `${propertyKey.toString()} must be a number.`,
+                message: "$propertyKey must be a number.",
                 method: (input: any) => {
                     return Promise.resolve(isNumber(input));
                 }

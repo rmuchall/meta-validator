@@ -12,7 +12,7 @@ export function IsUrl(options?: IsUrlOptions): PropertyDecorator {
             className: target.constructor.name,
             validator: {
                 decoratorName: IsUrl.name,
-                message: `${propertyKey.toString()} must be a valid URL.`,
+                message: "$propertyKey must be a valid URL.",
                 method: (input: any) => {
                     return Promise.resolve(isUrl(input, options));
                 }

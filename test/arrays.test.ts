@@ -1,7 +1,6 @@
 import {MetaValidator} from "../src/MetaValidator";
 import {IsString} from "../src/decorators/property/IsString";
 import {IsNested} from "../src/decorators/property/IsNested";
-import {ValidationErrors} from "../src/interfaces/ValidationErrors";
 
 const validValues: any[] = [
     "abc",
@@ -57,7 +56,7 @@ test("Arrays valid values", async () => {
         widgetArray.push(widget);
     }
 
-    const validationErrorArray = await MetaValidator.validate(widgetArray);
+    const validationErrorArray = await new MetaValidator().validate(widgetArray);
     for (const validationError of validationErrorArray) {
         expect(Object.keys(validationError).length).toBe(0);
     }
@@ -99,7 +98,7 @@ test("Arrays invalid values", async () => {
         widgetArray.push(widget);
     }
 
-    const validationErrorArray = await MetaValidator.validate(widgetArray);
+    const validationErrorArray = await new MetaValidator().validate(widgetArray);
     for (const validationError of validationErrorArray) {
         expect(Object.keys(validationError).length).toBe(2);
     }

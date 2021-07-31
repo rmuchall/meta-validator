@@ -12,7 +12,7 @@ test("validate non-object: undefined", () => {
     }
 
     void expect(() => {
-        return MetaValidator.validate(undefined as any);
+        return new MetaValidator().validate(undefined as any);
     }).rejects.toThrow();
 });
 
@@ -23,7 +23,7 @@ test("validate non-object: null", () => {
     }
 
     void expect(() => {
-        return MetaValidator.validate(null as any);
+        return new MetaValidator().validate(null as any);
     }).rejects.toThrow();
 });
 
@@ -34,7 +34,7 @@ test("validate non-object: string", () => {
     }
 
     void expect(() => {
-        return MetaValidator.validate("test" as any);
+        return new MetaValidator().validate("test" as any);
     }).rejects.toThrow();
 });
 
@@ -45,7 +45,7 @@ test("no metadata", () => {
 
     void expect(() => {
         const widget = new Widget();
-        return MetaValidator.validate(widget);
+        return new MetaValidator().validate(widget);
     }).rejects.toThrow();
 });
 
@@ -77,7 +77,7 @@ test("throw error", () => {
 
     void expect(() => {
         const widget: Widget = Object.assign<Widget, Widget>(new Widget(), {name: "this is a test"});
-        return MetaValidator.validate(widget);
+        return new MetaValidator().validate(widget);
     }).rejects.toThrow();
 });
 
@@ -92,7 +92,7 @@ test("extraneous properties", () => {
     (widget as any).extra = "extra";
 
     void expect(() => {
-        return MetaValidator.validate(widget);
+        return new MetaValidator().validate(widget);
     }).rejects.toThrow();
 });
 
@@ -109,7 +109,7 @@ test("proto vulnerability", () => {
     };
 
     void expect(() => {
-        return MetaValidator.validate(widget);
+        return new MetaValidator().validate(widget);
     }).rejects.toThrow();
 });
 
@@ -152,6 +152,6 @@ test("circular dependencies", () => {
     widget.detail.circular = widgetDetail;
 
     void expect(() => {
-        return MetaValidator.validate(widget);
+        return new MetaValidator().validate(widget);
     }).rejects.toThrow();
 });

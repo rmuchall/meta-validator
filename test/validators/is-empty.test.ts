@@ -46,7 +46,7 @@ test("decorators.IsEmpty() valid values", async () => {
 
     for (const value of validValues) {
         const widget: Widget = Object.assign<Widget, Widget>(new Widget(), {name: value});
-        const validationErrors = await MetaValidator.validate(widget);
+        const validationErrors = await new MetaValidator().validate(widget);
         expect(Object.keys(validationErrors).length).toBe(0);
     }
 });
@@ -59,7 +59,7 @@ test("decorators.IsEmpty() invalid values", async () => {
 
     for (const value of invalidValues) {
         const widget: Widget = Object.assign<Widget, Widget>(new Widget(), {name: value});
-        const validationErrors = await MetaValidator.validate(widget);
+        const validationErrors = await new MetaValidator().validate(widget);
         expect(Object.keys(validationErrors).length).toBe(1);
     }
 });

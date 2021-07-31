@@ -14,7 +14,7 @@ test("decorators.IsEqualTo() valid value", async () => {
     }
 
     const widget: Widget = Object.assign<Widget, Widget>(new Widget(), {topColor: "Blue", bottomColor: "Blue"});
-    const validationErrors = await MetaValidator.validate(widget);
+    const validationErrors = await new MetaValidator().validate(widget);
     expect(Object.keys(validationErrors).length).toBe(0);
 });
 
@@ -28,6 +28,6 @@ test("decorators.IsEqualTo() invalid value", async () => {
     }
 
     const widget: Widget = Object.assign<Widget, Widget>(new Widget(), {topColor: "Blue", bottomColor: "Red"});
-    const validationErrors = await MetaValidator.validate(widget);
+    const validationErrors = await new MetaValidator().validate(widget);
     expect(Object.keys(validationErrors).length).toBe(1);
 });

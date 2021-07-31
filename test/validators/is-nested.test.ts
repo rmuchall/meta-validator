@@ -53,7 +53,7 @@ test("decorators.IsNested() valid values", async () => {
                 })
             })
         });
-        const validationErrors = await MetaValidator.validate(widget);
+        const validationErrors = await new MetaValidator().validate(widget);
         expect(Object.keys(validationErrors).length).toBe(0);
     }
 });
@@ -90,7 +90,7 @@ test("decorators.IsNested() invalid values", async () => {
                 })
             })
         });
-        const validationErrors = await MetaValidator.validate(widget);
+        const validationErrors = await new MetaValidator().validate(widget);
         expect(Object.keys(validationErrors).length).toBe(2);
         expect(Object.keys(validationErrors["widgetMaterial"]).length).toBe(2);
         expect(Object.keys((validationErrors["widgetMaterial"] as ValidationErrors)["widgetColor"]).length).toBe(1);

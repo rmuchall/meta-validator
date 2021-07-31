@@ -19,8 +19,8 @@ export * from "./decorators/property/IsUrl";
 export * from "./decorators/property/IsValid";
 // interfaces
 export * from "./interfaces/FormatterData";
-export * from "./interfaces/GlobalOptions";
 export * from "./interfaces/Metadata";
+export * from "./interfaces/Options";
 export * from "./interfaces/ValidationContext";
 export * from "./interfaces/ValidationErrors";
 export * from "./interfaces/Validator";

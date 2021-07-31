@@ -79,7 +79,7 @@ test("decorators.IsIp() valid values", async () => {
 
     for (const value of validValues) {
         const widget: Widget = Object.assign<Widget, Widget>(new Widget(), {ipAddress: value});
-        const validationErrors = await MetaValidator.validate(widget);
+        const validationErrors = await new MetaValidator().validate(widget);
         expect(Object.keys(validationErrors).length).toBe(0);
     }
 });
@@ -92,7 +92,7 @@ test("decorators.IsIp() invalid values", async () => {
 
     for (const value of invalidValues) {
         const widget: Widget = Object.assign<Widget, Widget>(new Widget(), {ipAddress: value});
-        const validationErrors = await MetaValidator.validate(widget);
+        const validationErrors = await new MetaValidator().validate(widget);
         expect(Object.keys(validationErrors).length).toBe(1);
     }
 });

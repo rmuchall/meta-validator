@@ -1,39 +1,39 @@
 import {ValidationContext} from "./interfaces/ValidationContext";
-import {GlobalOptions} from "./interfaces/GlobalOptions";
+import {Options} from "./interfaces/Options";
 import {Metadata} from "./interfaces/Metadata";
 import {ValidationErrors} from "./interfaces/ValidationErrors";
 import {validationErrorFormatter} from "./utilities/validation-error-formatter";
 import {FormatterData} from "./interfaces/FormatterData";
 
-export abstract class MetaValidator {
+export class MetaValidator {
     private static metadata: Record<string, Metadata> = {};
-    private static circularCheck: Set<Record<string, any>> = new Set<Record<string, any>>();
+    private circularCheck: Set<Record<string, any>> = new Set<Record<string, any>>();
 
-    static validate(obj: Record<string, any>[], options?: GlobalOptions): Promise<ValidationErrors[]>
-    static validate(obj: Record<string, any>, options?: GlobalOptions): Promise<ValidationErrors>
-    static validate(obj: Record<string, any> | Record<string, any>[], options?: GlobalOptions): Promise<ValidationErrors[] | ValidationErrors> {
-        MetaValidator.circularCheck.clear();
+    validate(obj: Record<string, any>[], options?: Options): Promise<ValidationErrors[]>
+    validate(obj: Record<string, any>, options?: Options): Promise<ValidationErrors>
+    validate(obj: Record<string, any> | Record<string, any>[], options?: Options): Promise<ValidationErrors[] | ValidationErrors> {
+        this.circularCheck.clear();
 
         // Set default globalOptions
-        const globalOptions = Object.assign<GlobalOptions, Partial<GlobalOptions>>({}, {
+        options = Object.assign<Options, Partial<Options>>({}, {
             isSkipMissingProperties: options?.isSkipMissingProperties || false,
             customErrorMessageFormatter: options?.customErrorMessageFormatter,
             customErrorMessages: options?.customErrorMessages || {}
         });
 
         if (Array.isArray(obj)) {
-            return MetaValidator.validateArray(obj, globalOptions);
+            return this.validateArray(obj, options);
         }
 
-        return MetaValidator.validateObject(obj, globalOptions);
+        return this.validateObject(obj, options);
     }
 
-    private static async validateObject(obj: Record<string, any>, globalOptions: GlobalOptions): Promise<ValidationErrors> {
+    private async validateObject(obj: Record<string, any>, globalOptions: Options): Promise<ValidationErrors> {
         // Check for circular dependencies
-        if (MetaValidator.circularCheck.has(obj)) {
+        if (this.circularCheck.has(obj)) {
             throw new Error("Object has a circular dependency");
         }
-        MetaValidator.circularCheck.add(obj);
+        this.circularCheck.add(obj);
 
         // Check obj is an instance of a class
         if (!obj || !obj.constructor) {
@@ -71,12 +71,12 @@ export abstract class MetaValidator {
                 if (context.isNested) {
                     let nestedValidationErrors: ValidationErrors | ValidationErrors[];
                     if (Array.isArray(obj[propertyKey])) {
-                        nestedValidationErrors = await MetaValidator.validateArray(obj[propertyKey], globalOptions);
+                        nestedValidationErrors = await this.validateArray(obj[propertyKey], globalOptions);
                         if (nestedValidationErrors.length > 0) {
                             validationErrors[context.propertyKey] = nestedValidationErrors;
                         }
                     } else {
-                        nestedValidationErrors = await MetaValidator.validateObject(obj[propertyKey], globalOptions);
+                        nestedValidationErrors = await this.validateObject(obj[propertyKey], globalOptions);
                         if (Object.keys(nestedValidationErrors).length > 0) {
                             validationErrors[context.propertyKey] = nestedValidationErrors;
                         }
@@ -125,10 +125,10 @@ export abstract class MetaValidator {
         return validationErrors;
     }
 
-    private static async validateArray(objArray: Record<string, any>[], options: GlobalOptions): Promise<ValidationErrors[]> {
+    private async validateArray(objArray: Record<string, any>[], options: Options): Promise<ValidationErrors[]> {
         const validationErrorArray: ValidationErrors[] = [];
         for (const obj of objArray) {
-            validationErrorArray.push(await MetaValidator.validateObject(obj, options));
+            validationErrorArray.push(await this.validateObject(obj, options));
         }
 
         return validationErrorArray;

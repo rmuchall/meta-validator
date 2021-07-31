@@ -9,7 +9,7 @@ export function IsMinLength(minLength: number): PropertyDecorator {
             className: target.constructor.name,
             validator: {
                 decoratorName: IsMinLength.name,
-                message: "$propertyKey must have at least $options0 characters.",
+                message: "$propertyKey must have at least $option0 characters.",
                 options: [minLength],
                 method: (input: any) => {
                     return Promise.resolve(isString(input) && input.length >= minLength);

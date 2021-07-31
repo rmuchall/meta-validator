@@ -11,7 +11,7 @@ export function validationErrorFormatter(data: FormatterData): string {
 
     if (data.options) {
         for (let i = 0; i < data.options.length; i++) {
-            errorMessage = errorMessage.replace(`$options${i}`, data.options[i]);
+            errorMessage = errorMessage.replace(`$option${i}`, data.options[i]);
         }
     }
 

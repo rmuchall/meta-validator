@@ -11,7 +11,7 @@ export function IsString(): PropertyDecorator {
             className: target.constructor.name,
             validator: {
                 decoratorName: IsString.name,
-                message: "$propertyKey must only contain letters.",
+                message: "$propertyKey must be a string.",
                 method: (input: any) => {
                     return Promise.resolve(isString(input));
                 }

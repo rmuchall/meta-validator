@@ -6,33 +6,18 @@ import {IsNumber} from "../src/decorators/property/IsNumber";
 beforeEach(MetaValidator.clearMetadata);
 
 test("validate non-object: undefined", () => {
-    class Widget {
-        @IsString()
-        name: string;
-    }
-
     void expect(() => {
         return new MetaValidator().validate(undefined as any);
     }).rejects.toThrow();
 });
 
 test("validate non-object: null", () => {
-    class Widget {
-        @IsString()
-        name: string;
-    }
-
     void expect(() => {
         return new MetaValidator().validate(null as any);
     }).rejects.toThrow();
 });
 
 test("validate non-object: string", () => {
-    class Widget {
-        @IsString()
-        name: string;
-    }
-
     void expect(() => {
         return new MetaValidator().validate("test" as any);
     }).rejects.toThrow();

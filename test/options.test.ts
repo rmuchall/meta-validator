@@ -66,6 +66,7 @@ test("custom validation errors", async () => {
             "IsEqualTo": "CUSTOM: $propertyKey must be equal to $option0"
         }
     });
+
     expect((validationErrors["sameName"] as string[])[0]).toBe("CUSTOM: sameName must be equal to name");
 });
 
@@ -87,6 +88,12 @@ test("custom validation error formatter", async () => {
             errorMessage = errorMessage.replace("$propertyValue", data.propertyValue);
 
             if (data.options) {
+                expect(data.decoratorName).toEqual("IsEqualTo");
+                expect(data.message).toEqual("CUSTOM: $propertyKey must be equal to $option0");
+                expect(data.propertyKey).toEqual("sameName");
+                expect(data.propertyValue).toEqual("Thingymabob");
+                expect(data.options[0]).toEqual("name");
+
                 for (let i = 0; i < data.options.length; i++) {
                     errorMessage = errorMessage.replace(`$option${i}`, data.options[i]);
                 }
@@ -98,5 +105,6 @@ test("custom validation error formatter", async () => {
             "IsEqualTo": "CUSTOM: $propertyKey must be equal to $option0"
         }
     });
+
     expect((validationErrors["sameName"] as string[])[0]).toBe("CUSTOM: SAMENAME must be equal to name");
 });

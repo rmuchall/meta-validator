@@ -109,6 +109,7 @@ export class MetaValidator {
 
                     // Build formatter data
                     const errorFormatterData: FormatterData = {
+                        decoratorName: context.validator.decoratorName,
                         message: globalOptions.customErrorMessages![context.validator.decoratorName] || context.validator.message,
                         propertyKey: context.propertyKey,
                         propertyValue: obj[propertyKey],

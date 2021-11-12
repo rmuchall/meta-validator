@@ -3,6 +3,7 @@ export * from "./MetaValidator";
 // decorators/property
 export * from "./decorators/property/IsAlpha";
 export * from "./decorators/property/IsAlphanumeric";
+export * from "./decorators/property/IsBoolean";
 export * from "./decorators/property/IsEmail";
 export * from "./decorators/property/IsEmpty";
 export * from "./decorators/property/IsEqualTo";

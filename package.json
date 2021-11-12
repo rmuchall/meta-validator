@@ -1,6 +1,6 @@
 {
   "name": "meta-validator",
-  "version": "0.0.53",
+  "version": "0.0.54",
   "description": "meta-validator",
   "main": "./cjs/index.js",
   "module": "./esm/index.js",

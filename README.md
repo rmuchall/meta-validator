@@ -2,7 +2,11 @@
 ![npm bundle size](https://img.shields.io/bundlephobia/minzip/meta-validator)
 ![npm](https://img.shields.io/npm/v/meta-validator)
 ## What is meta-validator?
-meta-validator is a light-weight ([3k gzipped](https://bundlephobia.com/package/meta-validator@0.0.55)), tree-shakable, zero dependency validation library that uses [TypeScript decorators](https://www.typescriptlang.org/docs/handbook/decorators.html) to define validation rules on your classes. It is isomorphic and can be used in NodeJs or in a browser.
+meta-validator is a light-weight ([3k gzipped](https://bundlephobia.com/package/meta-validator)), [tree-shakable](https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking), zero dependency validation library that uses [TypeScript decorators](https://www.typescriptlang.org/docs/handbook/decorators.html) to define validation rules on your classes. It is isomorphic and can be used in NodeJs or in a browser.<br/>
+
+## Installation
+Install the [meta-validator package](https://www.npmjs.com/package/meta-validator) from npm. <br/>
+`npm install meta-validator`
 
 ## Usage
 Define validation rules using the available decorators. Multiple decorators can be used on each property.<br/>
@@ -27,10 +31,6 @@ const widgetArray: Widget[] = [];
 const validationErrorArray = await new MetaValidator().validate(widgetArray);
 ```
 
-## Installation
-Install the [meta-validator package](https://www.npmjs.com/package/meta-validator) from npm. <br/>
-`npm install meta-validator`
-
 ## Validation Errors
 If an object fails validation then meta-validator returns a ValidationError object with the following structure.:<br/>
 `<property>:[<array of validation error messages>]`<br/>
@@ -46,7 +46,7 @@ const validationErrors = await new MetaValidator().validate(widget, {
     }
 });
 ```
-When using custom error messages you can use the following text replacement codes:<br/>
+When using custom error messages the following text replacement codes are available:<br/>
 
 | Identifier      | Description                                           | 
 |-----------------|-------------------------------------------------------|
@@ -78,9 +78,9 @@ A custom formatter receives a parameter that has the following values:<br/>
 ```
 interface FormatterData {
     decoratorName: string;   // The decorator name e.g. IsBoolean()
-    message: string;         // The validation error message
-    propertyKey: string;     // The key of the property to be validated
-    propertyValue: string;   // The value of the property to be validated
+    message: string;         // The default validation error message
+    propertyKey: string;     // The key of the property being validated
+    propertyValue: string;   // The value of the property being validated
     options?: any[];         // Any options passed to the validator function
 }
 ```

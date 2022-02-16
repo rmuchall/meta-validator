@@ -4,6 +4,8 @@
 ## What is meta-validator?
 meta-validator is a light-weight ([3k gzipped](https://bundlephobia.com/package/meta-validator@0.0.55)), tree-shakable, zero dependency validation library that uses [TypeScript decorators](https://www.typescriptlang.org/docs/handbook/decorators.html) to define validation rules on your classes. It is isomorphic and can be used in NodeJs or in a browser.
 
+## Usage
+Define validation rules using the available decorators. Multiple decorators can be used on each property.<br/>
 ```
 export class Widget {
     @IsNotEmpty()
@@ -19,6 +21,11 @@ widget.name = "abc1234";
 widget.email = "myemail@test.com";
 const validationErrors = await new MetaValidator().validate(myWidget);
 ```
+You can also validate arrays of objects in the same way.<br/>
+```
+const widgetArray: Widget[] = [];
+const validationErrorArray = await new MetaValidator().validate(widgetArray);
+```
 
 ## Installation
 Install the [meta-validator package](https://www.npmjs.com/package/meta-validator) from npm. <br/>
@@ -28,7 +35,7 @@ Install the [meta-validator package](https://www.npmjs.com/package/meta-validato
 If an object fails validation then meta-validator returns a ValidationError object with the following structure.:<br/>
 `<property>:[<array of validation error messages>]`<br/>
 Example:<br/>
-`{ email: [ 'email must be a valid email address.' ] }`
+`{ email: [ 'email must be a valid email address.' ] }`<br/>
 
 ### Custom Validation Error Messages
 You can provide custom error messages by using the `customErrorMessages` option.<br/>
@@ -67,7 +74,7 @@ const validationErrors = await new MetaValidator().validate(widget, {
     }
 });
 ```
-The custom formatter automatically includes an object with the following values:<br/>
+A custom formatter receives a parameter that has the following values:<br/>
 ```
 interface FormatterData {
     decoratorName: string;   // The decorator name e.g. IsBoolean()
@@ -84,7 +91,30 @@ If you wish to validate an object but skip any missing properties you can use th
 const validationErrors = await new MetaValidator().validate(widget, {isSkipMissingProperties: true});
 ```
 
-## All Available Decorators
+## Custom Decorators
+You can also create your own validation decorators. Use the existing decorators as examples.<br/>
+```
+export function IsIp(options?: IsIpOptions): PropertyDecorator {
+    return (target, propertyKey) => {
+        MetaValidator.addMetadata({
+            // Metadata
+            target: target,
+            propertyKey: propertyKey.toString(),
+            // Context
+            className: target.constructor.name,
+            validator: {
+                decoratorName: IsIp.name,
+                message: "$propertyKey must be a valid ip address.",
+                method: (input: any) => {
+                    return Promise.resolve(isIp(input, options));
+                }
+            }
+        });
+    };
+}
+```
+
+## Decorator Reference
 
 | Decorator                | Description                                               | 
 |--------------------------|-----------------------------------------------------------|

@@ -2,7 +2,7 @@
 ![npm bundle size](https://img.shields.io/bundlephobia/minzip/meta-validator)
 ![npm](https://img.shields.io/npm/v/meta-validator)
 ## What is meta-validator?
-meta-validator is a light-weight ([3k gzipped](https://bundlephobia.com/package/meta-validator)), [tree-shakable](https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking), zero dependency validation library that uses [TypeScript decorators](https://www.typescriptlang.org/docs/handbook/decorators.html) to define validation rules on your classes. It is isomorphic and can be used in NodeJs or in a browser.<br/>
+meta-validator is a lightweight ([3k gzipped](https://bundlephobia.com/package/meta-validator)), [tree-shakable](https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking), zero dependency validation library that uses [TypeScript decorators](https://www.typescriptlang.org/docs/handbook/decorators.html) to define validation rules on your classes. It is isomorphic and can be used in NodeJs or in a browser.<br/>
 
 ## Installation
 Install the [meta-validator package](https://www.npmjs.com/package/meta-validator) from npm. <br/>
@@ -86,7 +86,7 @@ interface FormatterData {
 ```
 
 ## Skip Missing Properties
-If you wish to validate an object but skip any missing properties you can use the following option.<br/>
+If you wish to validate an object but skip any missing properties you can use the `isSkipMissingProperties` option.<br/>
 ```
 const validationErrors = await new MetaValidator().validate(widget, {isSkipMissingProperties: true});
 ```

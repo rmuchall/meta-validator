@@ -2,7 +2,7 @@
 ![npm bundle size](https://img.shields.io/bundlephobia/minzip/meta-validator)
 ![npm](https://img.shields.io/npm/v/meta-validator)
 ## What is meta-validator?
-meta-validator is a lightweight ([3k gzipped](https://bundlephobia.com/package/meta-validator)), [tree-shakable](https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking), zero dependency validation library that uses [TypeScript decorators](https://www.typescriptlang.org/docs/handbook/decorators.html) to define validation rules on your classes. It is isomorphic and can be used in NodeJs or in a browser.<br/>
+meta-validator is a lightweight ([3k gzipped](https://bundlephobia.com/package/meta-validator)), [tree-shakable](https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking), zero dependency validation library that uses [TypeScript decorators](https://www.typescriptlang.org/docs/handbook/decorators.html) to define validation rules on your classes. It is isomorphic and can be used with NodeJs or in a browser.<br/>
 
 ## Installation
 Install the [meta-validator package](https://www.npmjs.com/package/meta-validator) from npm. <br/>
@@ -10,7 +10,7 @@ Install the [meta-validator package](https://www.npmjs.com/package/meta-validato
 
 ## Usage
 Define validation rules using the available decorators. Multiple decorators can be used on each property.<br/>
-```
+```typescript
 export class Widget {
     @IsNotEmpty()
     @IsAlphanumeric()
@@ -26,7 +26,7 @@ widget.email = "myemail@test.com";
 const validationErrors = await new MetaValidator().validate(myWidget);
 ```
 You can also validate arrays of objects in the same way.<br/>
-```
+```typescript
 const widgetArray: Widget[] = [];
 const validationErrorArray = await new MetaValidator().validate(widgetArray);
 ```
@@ -39,7 +39,7 @@ Example:<br/>
 
 ### Custom Validation Error Messages
 You can provide custom error messages by using the `customErrorMessages` option.<br/>
-```
+```typescript
 const validationErrors = await new MetaValidator().validate(widget, {
     customErrorMessages: {
         "IsEqualTo": "$propertyKey must be equal to $option0"
@@ -57,7 +57,7 @@ When using custom error messages the following text replacement codes are availa
 ### Custom Message Formatter
 
 If you require total control over validation error messages you can supply a custom message formatter.<br/>
-```
+```typescript
 const validationErrors = await new MetaValidator().validate(widget, {
     customErrorMessageFormatter: (data: FormatterData) => {
         let errorMessage = data.message;
@@ -75,7 +75,7 @@ const validationErrors = await new MetaValidator().validate(widget, {
 });
 ```
 A custom formatter receives a parameter that has the following values:<br/>
-```
+```typescript
 interface FormatterData {
     decoratorName: string;   // The decorator name e.g. IsBoolean()
     message: string;         // The default validation error message
@@ -87,13 +87,13 @@ interface FormatterData {
 
 ## Skip Missing Properties
 If you wish to validate an object but skip any missing properties you can use the `isSkipMissingProperties` option.<br/>
-```
+```typescript
 const validationErrors = await new MetaValidator().validate(widget, {isSkipMissingProperties: true});
 ```
 
 ## Custom Decorators
 You can also create your own validation decorators. Use the existing decorators as examples.<br/>
-```
+```typescript
 export function IsIp(options?: IsIpOptions): PropertyDecorator {
     return (target, propertyKey) => {
         MetaValidator.addMetadata({

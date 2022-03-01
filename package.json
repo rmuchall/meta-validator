@@ -1,6 +1,6 @@
 {
   "name": "meta-validator",
-  "version": "0.0.55",
+  "version": "0.0.56",
   "description": "meta-validator",
   "main": "./cjs/index.js",
   "module": "./esm/index.js",
@@ -22,7 +22,9 @@
     "type": "git",
     "url": "git+https://github.com/rmuchall/meta-validator.git"
   },
-  "keywords": ["validation"],
+  "keywords": [
+    "validation"
+  ],
   "author": "Rob Muchall <rmuchall@protonmail.com>",
   "license": "MIT",
   "bugs": {

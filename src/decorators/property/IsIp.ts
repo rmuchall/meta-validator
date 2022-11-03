@@ -1,6 +1,6 @@
-import {MetaValidator} from "../../MetaValidator";
-import {isIp} from "../../validators/is-ip";
-import {IsIpOptions} from "../../interfaces/options/IsIpOptions";
+import {MetaValidator} from "../../MetaValidator.js";
+import {isIp} from "../../validators/is-ip.js";
+import {IsIpOptions} from "../../interfaces/options/IsIpOptions.js";
 
 export function IsIp(options?: IsIpOptions): PropertyDecorator {
     return (target, propertyKey) => {

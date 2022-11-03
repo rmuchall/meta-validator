@@ -1,5 +1,5 @@
-import {MetaValidator} from "../../MetaValidator";
-import {isRegEx} from "../../validators/is-reg-ex";
+import {MetaValidator} from "../../MetaValidator.js";
+import {isRegEx} from "../../validators/is-reg-ex.js";
 
 export function IsRegEx(): PropertyDecorator {
     return (target, propertyKey) => {

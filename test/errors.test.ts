@@ -1,40 +1,32 @@
-import {MetaValidator} from "../src/MetaValidator";
-import {IsString} from "../src/decorators/property/IsString";
-import {IsNested} from "../src/decorators/property/IsNested";
-import {IsNumber} from "../src/decorators/property/IsNumber";
+import {test, beforeEach} from "tap";
+import {MetaValidator} from "../src/MetaValidator.js";
+import {IsString} from "../src/decorators/property/IsString.js";
+import {IsNested} from "../src/decorators/property/IsNested.js";
+import {IsNumber} from "../src/decorators/property/IsNumber.js";
 
-beforeEach(MetaValidator.clearMetadata);
+beforeEach(t => MetaValidator.clearMetadata());
 
-test("validate non-object: undefined", () => {
-    void expect(() => {
-        return new MetaValidator().validate(undefined as any);
-    }).rejects.toThrow();
+void test("validate non-object: undefined", async t => {
+    await t.rejects(new MetaValidator().validate(undefined as any));
 });
 
-test("validate non-object: null", () => {
-    void expect(() => {
-        return new MetaValidator().validate(null as any);
-    }).rejects.toThrow();
+void test("validate non-object: null", async t => {
+    await t.rejects(new MetaValidator().validate(null as any));
 });
 
-test("validate non-object: string", () => {
-    void expect(() => {
-        return new MetaValidator().validate("test" as any);
-    }).rejects.toThrow();
+void test("validate non-object: string", async t => {
+    await t.rejects(() => new MetaValidator().validate("test" as any));
 });
 
-test("no metadata", () => {
+void test("no metadata", async t => {
     class Widget {
         name: string;
     }
 
-    void expect(() => {
-        const widget = new Widget();
-        return new MetaValidator().validate(widget);
-    }).rejects.toThrow();
+    await t.rejects(new MetaValidator().validate(new Widget()));
 });
 
-test("throw error", () => {
+void test("throw error", async t => {
     function ThrowError(): PropertyDecorator {
         return (target, propertyKey) => {
             MetaValidator.addMetadata({
@@ -60,13 +52,10 @@ test("throw error", () => {
         name: string;
     }
 
-    void expect(() => {
-        const widget: Widget = Object.assign<Widget, Widget>(new Widget(), {name: "this is a test"});
-        return new MetaValidator().validate(widget);
-    }).rejects.toThrow();
+    await t.rejects(new MetaValidator().validate(Object.assign<Widget, Widget>(new Widget(), {name: "this is a test"})));
 });
 
-test("extraneous properties", () => {
+void test("extraneous properties", async t => {
     class Widget {
         @IsString()
         name: string;
@@ -75,13 +64,10 @@ test("extraneous properties", () => {
     const widget: Widget = new Widget();
     widget.name = "test";
     (widget as any).extra = "extra";
-
-    void expect(() => {
-        return new MetaValidator().validate(widget);
-    }).rejects.toThrow();
+    await t.rejects(new MetaValidator().validate(widget));
 });
 
-test("proto vulnerability", () => {
+void test("proto vulnerability", async t => {
     class Widget {
         @IsString()
         name: string;
@@ -93,12 +79,10 @@ test("proto vulnerability", () => {
         // Empty
     };
 
-    void expect(() => {
-        return new MetaValidator().validate(widget);
-    }).rejects.toThrow();
+    await t.rejects(new MetaValidator().validate(widget));
 });
 
-test("circular dependencies", () => {
+void test("circular dependencies", async t => {
     class WidgetDetail {
         @IsString()
         material: string;
@@ -135,8 +119,5 @@ test("circular dependencies", () => {
     });
     widget.detail = widgetDetail;
     widget.detail.circular = widgetDetail;
-
-    void expect(() => {
-        return new MetaValidator().validate(widget);
-    }).rejects.toThrow();
+    await t.rejects(new MetaValidator().validate(widget));
 });

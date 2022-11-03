@@ -1,6 +1,6 @@
-import {MetaValidator} from "../../MetaValidator";
-import {isFqdn} from "../../validators/is-fqdn";
-import {IsFqdnOptions} from "../../interfaces/options/IsFqdnOptions";
+import {MetaValidator} from "../../MetaValidator.js";
+import {isFqdn} from "../../validators/is-fqdn.js";
+import {IsFqdnOptions} from "../../interfaces/options/IsFqdnOptions.js";
 
 export function IsFqDn(options?: IsFqdnOptions): PropertyDecorator {
     return (target, propertyKey) => {

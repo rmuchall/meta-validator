@@ -1,9 +1,10 @@
-import {MetaValidator} from "../../src/MetaValidator";
-import {IsValid} from "../../src/decorators/property/IsValid";
+import {test, beforeEach} from "tap";
+import {MetaValidator} from "../../src/MetaValidator.js";
+import {IsValid} from "../../src/decorators/property/IsValid.js";
 
-beforeEach(MetaValidator.clearMetadata);
+beforeEach(t => MetaValidator.clearMetadata());
 
-test("decorators.IsValid() is always valid", async () => {
+void test("decorators.IsValid() is always valid", async t => {
     class Widget {
         @IsValid()
         name: string;
@@ -11,5 +12,5 @@ test("decorators.IsValid() is always valid", async () => {
 
     const widget: Widget = Object.assign<Widget, Widget>(new Widget(), {name: "Doodad"});
     const validationErrors = await new MetaValidator().validate(widget);
-    expect(Object.keys(validationErrors).length).toBe(0);
+    t.equal(Object.keys(validationErrors).length, 0);
 });

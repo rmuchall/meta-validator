@@ -1,5 +1,5 @@
-import {isString} from "./is-string";
-import {isEmpty} from "./is-empty";
+import {isString} from "./is-string.js";
+import {isEmpty} from "./is-empty.js";
 
 export function isRegEx(input: unknown): boolean {
     if (isEmpty(input)) {

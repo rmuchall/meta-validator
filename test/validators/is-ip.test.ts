@@ -1,6 +1,7 @@
-import {MetaValidator} from "../../src/MetaValidator";
-import {isIp} from "../../src/validators/is-ip";
-import {IsIp} from "../../src/decorators/property/IsIp";
+import {test, beforeEach} from "tap";
+import {MetaValidator} from "../../src/MetaValidator.js";
+import {isIp} from "../../src/validators/is-ip.js";
+import {IsIp} from "../../src/decorators/property/IsIp.js";
 
 const validValues: any[] = [
     "127.0.0.1",
@@ -49,29 +50,33 @@ const invalidValues: any[] = [
     null
 ];
 
-beforeEach(MetaValidator.clearMetadata);
+beforeEach(t => MetaValidator.clearMetadata());
 
-test("functions.isIp() valid values", () => {
+void test("functions.isIp() valid values", t => {
     for (const value of validValues) {
         if (!isIp(value)) {
             throw new Error(`${JSON.stringify(value)} is false`);
         }
 
-        expect(isIp(value)).toBeTruthy();
+        t.ok(isIp(value), `value = ${value}`);
     }
+
+    t.end();
 });
 
-test("functions.isIp() invalid values", () => {
+void test("functions.isIp() invalid values", t => {
     for (const value of invalidValues) {
         if (isIp(value)) {
             throw new Error(`${JSON.stringify(value)} is true`);
         }
 
-        expect(isIp(value)).toBeFalsy();
+        t.notOk(isIp(value), `value = ${value}`);
     }
+
+    t.end();
 });
 
-test("decorators.IsIp() valid values", async () => {
+void test("decorators.IsIp() valid values", async t => {
     class Widget {
         @IsIp()
         ipAddress: string;
@@ -80,11 +85,11 @@ test("decorators.IsIp() valid values", async () => {
     for (const value of validValues) {
         const widget: Widget = Object.assign<Widget, Widget>(new Widget(), {ipAddress: value});
         const validationErrors = await new MetaValidator().validate(widget);
-        expect(Object.keys(validationErrors).length).toBe(0);
+        t.equal(Object.keys(validationErrors).length, 0, `value = ${value}`);
     }
 });
 
-test("decorators.IsIp() invalid values", async () => {
+void test("decorators.IsIp() invalid values", async t => {
     class Widget {
         @IsIp()
         ipAddress: string;
@@ -93,6 +98,6 @@ test("decorators.IsIp() invalid values", async () => {
     for (const value of invalidValues) {
         const widget: Widget = Object.assign<Widget, Widget>(new Widget(), {ipAddress: value});
         const validationErrors = await new MetaValidator().validate(widget);
-        expect(Object.keys(validationErrors).length).toBe(1);
+        t.equal(Object.keys(validationErrors).length, 1, `value = ${value}`);
     }
 });

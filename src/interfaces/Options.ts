@@ -1,7 +1,7 @@
-import {FormatterData} from "./FormatterData";
+import {FormatterData} from "./FormatterData.js";
 
 export interface Options {
-    isSkipMissingProperties?: boolean;
+    isSkipUndefinedValues?: boolean;
     customErrorMessageFormatter?: (data: FormatterData) => string;
     customErrorMessages?: Record<string, string>;
 }

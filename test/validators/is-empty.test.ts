@@ -1,10 +1,12 @@
-import {MetaValidator} from "../../src/MetaValidator";
-import {isEmpty} from "../../src/validators/is-empty";
-import {IsEmpty} from "../../src/decorators/property/IsEmpty";
+import {test, beforeEach} from "tap";
+import {MetaValidator} from "../../src/MetaValidator.js";
+import {isEmpty} from "../../src/validators/is-empty.js";
+import {IsEmpty} from "../../src/decorators/property/IsEmpty.js";
 
 const validValues: any[] = [
     1234,
     true,
+    false,
     "",
     {},
     undefined,
@@ -16,29 +18,33 @@ const invalidValues: any[] = [
     {test: 1234}
 ];
 
-beforeEach(MetaValidator.clearMetadata);
+beforeEach(t => MetaValidator.clearMetadata());
 
-test("functions.isEmpty() valid values", () => {
+void test("functions.isEmpty() valid values", t => {
     for (const value of validValues) {
         if (!isEmpty(value)) {
             throw new Error(`${JSON.stringify(value)} is false`);
         }
 
-        expect(isEmpty(value)).toBeTruthy();
+        t.ok(isEmpty(value), `value = ${value}`);
     }
+
+    t.end();
 });
 
-test("functions.isEmpty() invalid values", () => {
+void test("functions.isEmpty() invalid values", t => {
     for (const value of invalidValues) {
         if (isEmpty(value)) {
             throw new Error(`${JSON.stringify(value)} is true`);
         }
 
-        expect(isEmpty(value)).toBeFalsy();
+        t.notOk(isEmpty(value), `value = ${value}`);
     }
+
+    t.end();
 });
 
-test("decorators.IsEmpty() valid values", async () => {
+void test("decorators.IsEmpty() valid values", async t => {
     class Widget {
         @IsEmpty()
         name: any;
@@ -47,11 +53,11 @@ test("decorators.IsEmpty() valid values", async () => {
     for (const value of validValues) {
         const widget: Widget = Object.assign<Widget, Widget>(new Widget(), {name: value});
         const validationErrors = await new MetaValidator().validate(widget);
-        expect(Object.keys(validationErrors).length).toBe(0);
+        t.equal(Object.keys(validationErrors).length, 0, `value = ${value}`);
     }
 });
 
-test("decorators.IsEmpty() invalid values", async () => {
+void test("decorators.IsEmpty() invalid values", async t => {
     class Widget {
         @IsEmpty()
         name: any;
@@ -60,6 +66,6 @@ test("decorators.IsEmpty() invalid values", async () => {
     for (const value of invalidValues) {
         const widget: Widget = Object.assign<Widget, Widget>(new Widget(), {name: value});
         const validationErrors = await new MetaValidator().validate(widget);
-        expect(Object.keys(validationErrors).length).toBe(1);
+        t.equal(Object.keys(validationErrors).length, 1, `value = ${value}`);
     }
 });

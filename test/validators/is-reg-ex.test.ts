@@ -1,6 +1,7 @@
-import {MetaValidator} from "../../src";
-import {isRegEx} from "../../src/validators/is-reg-ex";
-import {IsRegEx} from "../../src/decorators/property/IsRegEx";
+import {test, beforeEach} from "tap";
+import {MetaValidator} from "../../src/MetaValidator.js";
+import {isRegEx} from "../../src/validators/is-reg-ex.js";
+import {IsRegEx} from "../../src/decorators/property/IsRegEx.js";
 
 const validValues: any[] = [
     "xxx",
@@ -15,29 +16,33 @@ const invalidValues: any[] = [
     undefined
 ];
 
-beforeEach(MetaValidator.clearMetadata);
+beforeEach(t => MetaValidator.clearMetadata());
 
-test("functions.isRegEx() valid values", () => {
+void test("functions.isRegEx() valid values", t => {
     for (const value of validValues) {
         if (!isRegEx(value)) {
             throw new Error(`${JSON.stringify(value)} is false`);
         }
 
-        expect(isRegEx(value)).toBeTruthy();
+        t.ok(isRegEx(value), `value = ${value}`);
     }
+
+    t.end();
 });
 
-test("functions.isRegEx() invalid values", () => {
+void test("functions.isRegEx() invalid values", t => {
     for (const value of invalidValues) {
         if (isRegEx(value)) {
             throw new Error(`${JSON.stringify(value)} is true`);
         }
 
-        expect(isRegEx(value)).toBeFalsy();
+        t.notOk(isRegEx(value), `value = ${value}`);
     }
+
+    t.end();
 });
 
-test("decorators.IsRegEx() valid values", async () => {
+void test("decorators.IsRegEx() valid values", async t => {
     class Widget {
         @IsRegEx()
         name: string;
@@ -46,11 +51,11 @@ test("decorators.IsRegEx() valid values", async () => {
     for (const value of validValues) {
         const widget: Widget = Object.assign<Widget, Widget>(new Widget(), {name: value});
         const validationErrors = await new MetaValidator().validate(widget);
-        expect(Object.keys(validationErrors).length).toBe(0);
+        t.equal(Object.keys(validationErrors).length, 0, `value = ${value}`);
     }
 });
 
-test("invalid values", async () => {
+void test("invalid values", async t => {
     class Widget {
         @IsRegEx()
         name: string;
@@ -59,6 +64,6 @@ test("invalid values", async () => {
     for (const value of invalidValues) {
         const widget: Widget = Object.assign<Widget, Widget>(new Widget(), {name: value});
         const validationErrors = await new MetaValidator().validate(widget);
-        expect(Object.keys(validationErrors).length).toBe(1);
+        t.equal(Object.keys(validationErrors).length, 1, `value = ${value}`);
     }
 });

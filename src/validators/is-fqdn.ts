@@ -1,6 +1,6 @@
-import {IsFqdnOptions} from "../interfaces/options/IsFqdnOptions";
-import {isString} from "./is-string";
-import {isEmpty} from "./is-empty";
+import {IsFqdnOptions} from "../interfaces/options/IsFqdnOptions.js";
+import {isString} from "./is-string.js";
+import {isEmpty} from "./is-empty.js";
 
 // From ValidatorJs
 // https://github.com/validatorjs/validator.js

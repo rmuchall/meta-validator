@@ -1,7 +1,8 @@
-import {MetaValidator} from "../../src/MetaValidator";
-import {IsString} from "../../src/decorators/property/IsString";
-import {IsNested} from "../../src/decorators/property/IsNested";
-import {ValidationErrors} from "../../src/interfaces/ValidationErrors";
+import {test, beforeEach} from "tap";
+import {MetaValidator} from "../../src/MetaValidator.js";
+import {IsString} from "../../src/decorators/property/IsString.js";
+import {IsNested} from "../../src/decorators/property/IsNested.js";
+import {ValidationErrors} from "../../src/interfaces/ValidationErrors.js";
 
 const validValues: any[] = [
     "abc",
@@ -19,9 +20,9 @@ const invalidValues: any[] = [
     null
 ];
 
-beforeEach(MetaValidator.clearMetadata);
+beforeEach(t => MetaValidator.clearMetadata());
 
-test("decorators.IsNested() valid values", async () => {
+void test("decorators.IsNested() valid values", async t => {
     class WidgetColor {
         @IsString()
         color: string;
@@ -54,11 +55,11 @@ test("decorators.IsNested() valid values", async () => {
             })
         });
         const validationErrors = await new MetaValidator().validate(widget);
-        expect(Object.keys(validationErrors).length).toBe(0);
+        t.equal(Object.keys(validationErrors).length, 0, `value = ${value}`);
     }
 });
 
-test("decorators.IsNested() invalid values", async () => {
+void test("decorators.IsNested() invalid values", async t => {
     class WidgetColor {
         @IsString()
         color: string;
@@ -91,8 +92,8 @@ test("decorators.IsNested() invalid values", async () => {
             })
         });
         const validationErrors = await new MetaValidator().validate(widget);
-        expect(Object.keys(validationErrors).length).toBe(2);
-        expect(Object.keys(validationErrors["widgetMaterial"]).length).toBe(2);
-        expect(Object.keys((validationErrors["widgetMaterial"] as ValidationErrors)["widgetColor"]).length).toBe(1);
+        t.equal(Object.keys(validationErrors).length, 2);
+        t.equal(Object.keys(validationErrors["widgetMaterial"]).length, 2);
+        t.equal(Object.keys((validationErrors["widgetMaterial"] as ValidationErrors)["widgetColor"]).length, 1);
     }
 });

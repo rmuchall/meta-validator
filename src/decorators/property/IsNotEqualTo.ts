@@ -1,4 +1,4 @@
-import {MetaValidator} from "../../MetaValidator";
+import {MetaValidator} from "../../MetaValidator.js";
 
 export function IsNotEqualTo(propertyKeyToCompare: string): PropertyDecorator {
     return (target, propertyKey) => {

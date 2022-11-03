@@ -2,8 +2,8 @@
 // https://github.com/nodejs/node/blob/master/lib/internal/net.js
 
 // IPv4 Segment
-import {isString} from "./is-string";
-import {IsIpOptions} from "../interfaces/options/IsIpOptions";
+import {isString} from "./is-string.js";
+import {IsIpOptions} from "../interfaces/options/IsIpOptions.js";
 
 const v4Seg = "(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])";
 const v4Str = `(${v4Seg}[.]){3}${v4Seg}`;

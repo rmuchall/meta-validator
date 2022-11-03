@@ -1,4 +1,4 @@
-import {isString} from "./is-string";
+import {isString} from "./is-string.js";
 
 export function isEmail(input: unknown): boolean {
     if (!isString(input)) {

@@ -1,6 +1,7 @@
-import {MetaValidator} from "../../src/MetaValidator";
-import {isEmail} from "../../src/validators/is-email";
-import {IsEmail} from "../../src/decorators/property/IsEmail";
+import {test, beforeEach} from "tap";
+import {MetaValidator} from "../../src/MetaValidator.js";
+import {isEmail} from "../../src/validators/is-email.js";
+import {IsEmail} from "../../src/decorators/property/IsEmail.js";
 
 function repeatString(str: string, count: number) {
     let result = "";
@@ -72,29 +73,33 @@ const invalidValues: any[] = [
     null
 ];
 
-beforeEach(MetaValidator.clearMetadata);
+beforeEach(t => MetaValidator.clearMetadata());
 
-test("functions.isEmail() valid values", () => {
+void test("functions.isEmail() valid values", t => {
     for (const value of validValues) {
         if (!isEmail(value)) {
             throw new Error(`${JSON.stringify(value)} is false`);
         }
 
-        expect(isEmail(value)).toBeTruthy();
+        t.ok(isEmail(value), `value = ${value}`);
     }
+
+    t.end();
 });
 
-test("functions.isEmail() invalid values", () => {
+void test("functions.isEmail() invalid values", t => {
     for (const value of invalidValues) {
         if (isEmail(value)) {
             throw new Error(`${JSON.stringify(value)} is true`);
         }
 
-        expect(isEmail(value)).toBeFalsy();
+        t.notOk(isEmail(value), `value = ${value}`);
     }
+
+    t.end();
 });
 
-test("decorators.IsEmail() valid values", async () => {
+void test("decorators.IsEmail() valid values", async t => {
     class Widget {
         @IsEmail()
         email: string;
@@ -103,11 +108,11 @@ test("decorators.IsEmail() valid values", async () => {
     for (const value of validValues) {
         const widget: Widget = Object.assign<Widget, Widget>(new Widget(), {email: value});
         const validationErrors = await new MetaValidator().validate(widget);
-        expect(Object.keys(validationErrors).length).toBe(0);
+        t.equal(Object.keys(validationErrors).length, 0, `value = ${value}`);
     }
 });
 
-test("decorators.IsEmail() invalid values", async () => {
+void test("decorators.IsEmail() invalid values", async t => {
     class Widget {
         @IsEmail()
         email: string;
@@ -116,6 +121,6 @@ test("decorators.IsEmail() invalid values", async () => {
     for (const value of invalidValues) {
         const widget: Widget = Object.assign<Widget, Widget>(new Widget(), {email: value});
         const validationErrors = await new MetaValidator().validate(widget);
-        expect(Object.keys(validationErrors).length).toBe(1);
+        t.equal(Object.keys(validationErrors).length, 1, `value = ${value}`);
     }
 });

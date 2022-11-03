@@ -1,5 +1,5 @@
-import {MetaValidator} from "../../MetaValidator";
-import {isEmail} from "../../validators/is-email";
+import {MetaValidator} from "../../MetaValidator.js";
+import {isEmail} from "../../validators/is-email.js";
 
 export function IsEmail(): PropertyDecorator {
     return (target, propertyKey) => {

@@ -1,6 +1,7 @@
-import {MetaValidator} from "../../src/MetaValidator";
-import {isFqdn} from "../../src/validators/is-fqdn";
-import {IsFqDn} from "../../src/decorators/property/IsFqDn";
+import {test, beforeEach} from "tap";
+import {MetaValidator} from "../../src/MetaValidator.js";
+import {isFqdn} from "../../src/validators/is-fqdn.js";
+import {IsFqDn} from "../../src/decorators/property/IsFqDn.js";
 
 const validValues: any[] = [
     "domain.com",
@@ -27,29 +28,33 @@ const invalidValues: any[] = [
     null
 ];
 
-beforeEach(MetaValidator.clearMetadata);
+beforeEach(t => MetaValidator.clearMetadata());
 
-test("functions.isFqDn() valid values", () => {
+void test("functions.isFqDn() valid values", t => {
     for (const value of validValues) {
         if (!isFqdn(value)) {
             throw new Error(`${JSON.stringify(value)} is false`);
         }
 
-        expect(isFqdn(value)).toBeTruthy();
+        t.ok(isFqdn(value), `value = ${value}`);
     }
+
+    t.end();
 });
 
-test("functions.isFqDn() invalid values", () => {
+void test("functions.isFqDn() invalid values", t => {
     for (const value of invalidValues) {
         if (isFqdn(value)) {
             throw new Error(`${JSON.stringify(value)} is true`);
         }
 
-        expect(isFqdn(value)).toBeFalsy();
+        t.notOk(isFqdn(value), `value = ${value}`);
     }
+
+    t.end();
 });
 
-test("decorators.IsFqDn() valid values", async () => {
+void test("decorators.IsFqDn() valid values", async t => {
     class Widget {
         @IsFqDn()
         domainName: string;
@@ -58,11 +63,11 @@ test("decorators.IsFqDn() valid values", async () => {
     for (const value of validValues) {
         const widget: Widget = Object.assign<Widget, Widget>(new Widget(), {domainName: value});
         const validationErrors = await new MetaValidator().validate(widget);
-        expect(Object.keys(validationErrors).length).toBe(0);
+        t.equal(Object.keys(validationErrors).length, 0, `value = ${value}`);
     }
 });
 
-test("decorators.IsFqDn() invalid values", async () => {
+void test("decorators.IsFqDn() invalid values", async t => {
     class Widget {
         @IsFqDn()
         domainName: string;
@@ -71,6 +76,6 @@ test("decorators.IsFqDn() invalid values", async () => {
     for (const value of invalidValues) {
         const widget: Widget = Object.assign<Widget, Widget>(new Widget(), {domainName: value});
         const validationErrors = await new MetaValidator().validate(widget);
-        expect(Object.keys(validationErrors).length).toBe(1);
+        t.equal(Object.keys(validationErrors).length, 1, `value = ${value}`);
     }
 });

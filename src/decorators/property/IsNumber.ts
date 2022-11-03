@@ -1,5 +1,5 @@
-import {MetaValidator} from "../../MetaValidator";
-import {isNumber} from "../../validators/is-number";
+import {MetaValidator} from "../../MetaValidator.js";
+import {isNumber} from "../../validators/is-number.js";
 
 export function IsNumber(): PropertyDecorator {
     return (target, propertyKey) => {

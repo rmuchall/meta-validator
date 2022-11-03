@@ -1,5 +1,6 @@
-import {MetaValidator} from "../../src/MetaValidator";
-import {IsBoolean} from "../../src/decorators/property/IsBoolean";
+import {test, beforeEach} from "tap";
+import {MetaValidator} from "../../src/MetaValidator.js";
+import {IsBoolean} from "../../src/decorators/property/IsBoolean.js";
 
 const validValues: any[] = [
     true,
@@ -14,9 +15,9 @@ const invalidValues: any[] = [
     123
 ];
 
-beforeEach(MetaValidator.clearMetadata);
+beforeEach(t => MetaValidator.clearMetadata());
 
-test("decorators.IsBoolean() valid values", async () => {
+void test("decorators.IsBoolean() valid values", async t => {
     class Widget {
         @IsBoolean()
         isValid: any;
@@ -25,11 +26,11 @@ test("decorators.IsBoolean() valid values", async () => {
     for (const value of validValues) {
         const widget: Widget = Object.assign<Widget, Widget>(new Widget(), {isValid: value});
         const validationErrors = await new MetaValidator().validate(widget);
-        expect(Object.keys(validationErrors).length).toBe(0);
+        t.equal(Object.keys(validationErrors).length, 0, `value = ${value}`);
     }
 });
 
-test("decorators.IsBoolean() invalid values", async () => {
+void test("decorators.IsBoolean() invalid values", async t => {
     class Widget {
         @IsBoolean()
         isValid: any;
@@ -38,6 +39,6 @@ test("decorators.IsBoolean() invalid values", async () => {
     for (const value of invalidValues) {
         const widget: Widget = Object.assign<Widget, Widget>(new Widget(), {isValid: value});
         const validationErrors = await new MetaValidator().validate(widget);
-        expect(Object.keys(validationErrors).length).toBe(1);
+        t.equal(Object.keys(validationErrors).length, 1, `value = ${value}`);
     }
 });

@@ -1,5 +1,5 @@
-import {MetaValidator} from "../../MetaValidator";
-import {isString} from "../../validators/is-string";
+import {MetaValidator} from "../../MetaValidator.js";
+import {isString} from "../../validators/is-string.js";
 
 export function IsMaxLength(maxLength: number): PropertyDecorator {
     return (target, propertyKey) => {

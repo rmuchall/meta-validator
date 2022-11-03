@@ -1,6 +1,6 @@
-import {MetaValidator} from "../../MetaValidator";
-import {isUrl} from "../../validators/is-url";
-import {IsUrlOptions} from "../../interfaces/options/IsUrlOptions";
+import {MetaValidator} from "../../MetaValidator.js";
+import {isUrl} from "../../validators/is-url.js";
+import {IsUrlOptions} from "../../interfaces/options/IsUrlOptions.js";
 
 export function IsUrl(options?: IsUrlOptions): PropertyDecorator {
     return (target, propertyKey) => {

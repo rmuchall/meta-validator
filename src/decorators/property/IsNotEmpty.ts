@@ -1,5 +1,5 @@
-import {MetaValidator} from "../../MetaValidator";
-import {isEmpty} from "../../validators/is-empty";
+import {MetaValidator} from "../../MetaValidator.js";
+import {isEmpty} from "../../validators/is-empty.js";
 
 export function IsNotEmpty(): PropertyDecorator {
     return (target, propertyKey) => {

@@ -1,4 +1,4 @@
-import {MetaValidator} from "../../MetaValidator";
+import {MetaValidator} from "../../MetaValidator.js";
 
 export function IsBoolean(): PropertyDecorator {
     return (target, propertyKey) => {

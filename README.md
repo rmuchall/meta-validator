@@ -86,9 +86,9 @@ interface FormatterData {
 ```
 
 ## Skip Missing Properties
-If you wish to validate an object but skip any missing properties you can use the `isSkipMissingProperties` option.<br/>
+If you wish to validate an object but skip any missing properties you can use the `isSkipUndefinedValues` option.<br/>
 ```typescript
-const validationErrors = await new MetaValidator().validate(widget, {isSkipMissingProperties: true});
+const validationErrors = await new MetaValidator().validate(widget, {isSkipUndefinedValues: true});
 ```
 
 ## Custom Decorators

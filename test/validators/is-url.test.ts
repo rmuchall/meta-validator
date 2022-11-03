@@ -1,6 +1,7 @@
-import {MetaValidator} from "../../src/MetaValidator";
-import {isUrl} from "../../src/validators/is-url";
-import {IsUrl} from "../../src/decorators/property/IsUrl";
+import {test, beforeEach} from "tap";
+import {MetaValidator} from "../../src/MetaValidator.js";
+import {isUrl} from "../../src/validators/is-url.js";
+import {IsUrl} from "../../src/decorators/property/IsUrl.js";
 
 const validValues: any[] = [
     "http://foobar.com",
@@ -88,29 +89,33 @@ const invalidValues: any[] = [
     null
 ];
 
-beforeEach(MetaValidator.clearMetadata);
+beforeEach(t => MetaValidator.clearMetadata());
 
-test("functions.isUrl() valid values", () => {
+void test("functions.isUrl() valid values", t => {
     for (const value of validValues) {
         if (!isUrl(value)) {
             throw new Error(`${JSON.stringify(value)} is false`);
         }
 
-        expect(isUrl(value)).toBeTruthy();
+        t.ok(isUrl(value), `value = ${value}`);
     }
+
+    t.end();
 });
 
-test("functions.isUrl() invalid values", () => {
+void test("functions.isUrl() invalid values", t => {
     for (const value of invalidValues) {
         if (isUrl(value)) {
             throw new Error(`${JSON.stringify(value)} is true`);
         }
 
-        expect(isUrl(value)).toBeFalsy();
+        t.notOk(isUrl(value), `value = ${value}`);
     }
+
+    t.end();
 });
 
-test("decorators.IsUrl() valid values", async () => {
+void test("decorators.IsUrl() valid values", async t => {
     class Widget {
         @IsUrl()
         website: string;
@@ -119,11 +124,11 @@ test("decorators.IsUrl() valid values", async () => {
     for (const value of validValues) {
         const widget: Widget = Object.assign<Widget, Widget>(new Widget(), {website: value});
         const validationErrors = await new MetaValidator().validate(widget);
-        expect(Object.keys(validationErrors).length).toBe(0);
+        t.equal(Object.keys(validationErrors).length, 0, `value = ${value}`);
     }
 });
 
-test("decorators.IsUrl() invalid values", async () => {
+void test("decorators.IsUrl() invalid values", async t => {
     class Widget {
         @IsUrl()
         website: string;
@@ -132,6 +137,6 @@ test("decorators.IsUrl() invalid values", async () => {
     for (const value of invalidValues) {
         const widget: Widget = Object.assign<Widget, Widget>(new Widget(), {website: value});
         const validationErrors = await new MetaValidator().validate(widget);
-        expect(Object.keys(validationErrors).length).toBe(1);
+        t.equal(Object.keys(validationErrors).length, 1, `value = ${value}`);
     }
 });

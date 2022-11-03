@@ -1,7 +1,7 @@
-import {isIp4, isIp6} from "./is-ip";
-import {isFqdn} from "./is-fqdn";
-import {IsUrlOptions} from "../interfaces/options/IsUrlOptions";
-import {isString} from "./is-string";
+import {isIp4, isIp6} from "./is-ip.js";
+import {isFqdn} from "./is-fqdn.js";
+import {IsUrlOptions} from "../interfaces/options/IsUrlOptions.js";
+import {isString} from "./is-string.js";
 
 export function isUrl(input: unknown, options?: IsUrlOptions): boolean {
     // Set default options?

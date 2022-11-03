@@ -1,6 +1,7 @@
-import {MetaValidator} from "../src/MetaValidator";
-import {IsString} from "../src/decorators/property/IsString";
-import {IsNested} from "../src/decorators/property/IsNested";
+import {test, beforeEach} from "tap";
+import {MetaValidator} from "../src/MetaValidator.js";
+import {IsString} from "../src/decorators/property/IsString.js";
+import {IsNested} from "../src/decorators/property/IsNested.js";
 
 const validValues: any[] = [
     "abc",
@@ -18,9 +19,9 @@ const invalidValues: any[] = [
     null
 ];
 
-beforeEach(MetaValidator.clearMetadata);
+beforeEach(t => MetaValidator.clearMetadata());
 
-test("Arrays valid values", async () => {
+void test("Arrays valid values", async t => {
     class WidgetColor {
         @IsString()
         color: string;
@@ -58,11 +59,11 @@ test("Arrays valid values", async () => {
 
     const validationErrorArray = await new MetaValidator().validate(widgetArray);
     for (const validationError of validationErrorArray) {
-        expect(Object.keys(validationError).length).toBe(0);
+        t.equal(Object.keys(validationError).length, 0);
     }
 });
 
-test("Arrays invalid values", async () => {
+void test("Arrays invalid values", async t => {
     class WidgetColor {
         @IsString()
         color: string;
@@ -100,6 +101,6 @@ test("Arrays invalid values", async () => {
 
     const validationErrorArray = await new MetaValidator().validate(widgetArray);
     for (const validationError of validationErrorArray) {
-        expect(Object.keys(validationError).length).toBe(2);
+        t.equal(Object.keys(validationError).length, 2);
     }
 });

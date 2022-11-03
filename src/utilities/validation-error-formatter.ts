@@ -1,4 +1,4 @@
-import {FormatterData} from "../interfaces/FormatterData";
+import {FormatterData} from "../interfaces/FormatterData.js";
 
 // Tokens:
 // $propertyKey

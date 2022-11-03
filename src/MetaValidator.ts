@@ -1,9 +1,9 @@
-import {ValidationContext} from "./interfaces/ValidationContext";
-import {Options} from "./interfaces/Options";
-import {Metadata} from "./interfaces/Metadata";
-import {ValidationErrors} from "./interfaces/ValidationErrors";
-import {validationErrorFormatter} from "./utilities/validation-error-formatter";
-import {FormatterData} from "./interfaces/FormatterData";
+import {ValidationContext} from "./interfaces/ValidationContext.js";
+import {Options} from "./interfaces/Options.js";
+import {Metadata} from "./interfaces/Metadata.js";
+import {ValidationErrors} from "./interfaces/ValidationErrors.js";
+import {validationErrorFormatter} from "./utilities/validation-error-formatter.js";
+import {FormatterData} from "./interfaces/FormatterData.js";
 
 export class MetaValidator {
     private static metadata: Record<string, Metadata> = {};
@@ -16,7 +16,7 @@ export class MetaValidator {
 
         // Set default globalOptions
         options = Object.assign<Options, Partial<Options>>({}, {
-            isSkipMissingProperties: options?.isSkipMissingProperties || false,
+            isSkipUndefinedValues: options?.isSkipUndefinedValues || false,
             customErrorMessageFormatter: options?.customErrorMessageFormatter,
             customErrorMessages: options?.customErrorMessages || {}
         });
@@ -56,9 +56,9 @@ export class MetaValidator {
         // Perform validation
         const validationErrors: ValidationErrors = {};
         for (const propertyKey of Object.keys(MetaValidator.metadata[className])) {
-            // Skip missing properties?
-            if (!Object.hasOwnProperty.call(obj, propertyKey) &&
-                globalOptions.isSkipMissingProperties) {
+
+            // Skip properties with undefined values?
+            if (globalOptions.isSkipUndefinedValues && obj[propertyKey] === undefined) {
                 continue;
             }
 

@@ -1,6 +1,7 @@
-import {MetaValidator} from "../../src/MetaValidator";
-import {isString} from "../../src/validators/is-string";
-import {IsString} from "../../src/decorators/property/IsString";
+import {test, beforeEach} from "tap";
+import {MetaValidator} from "../../src/MetaValidator.js";
+import {isString} from "../../src/validators/is-string.js";
+import {IsString} from "../../src/decorators/property/IsString.js";
 
 const validValues: any[] = [
     "abc",
@@ -18,29 +19,33 @@ const invalidValues: any[] = [
     undefined
 ];
 
-beforeEach(MetaValidator.clearMetadata);
+beforeEach(t => MetaValidator.clearMetadata());
 
-test("functions.isString() valid values", () => {
+void test("functions.isString() valid values", t => {
     for (const value of validValues) {
         if (!isString(value)) {
             throw new Error(`${JSON.stringify(value)} is false`);
         }
 
-        expect(isString(value)).toBeTruthy();
+        t.ok(isString(value), `value = ${value}`);
     }
+
+    t.end();
 });
 
-test("functions.isString() invalid values", () => {
+void test("functions.isString() invalid values", t => {
     for (const value of invalidValues) {
         if (isString(value)) {
             throw new Error(`${JSON.stringify(value)} is true`);
         }
 
-        expect(isString(value)).toBeFalsy();
+        t.notOk(isString(value), `value = ${value}`);
     }
+
+    t.end();
 });
 
-test("decorators.IsString() valid values", async () => {
+void test("decorators.IsString() valid values", async t => {
     class Widget {
         @IsString()
         name: string;
@@ -49,11 +54,11 @@ test("decorators.IsString() valid values", async () => {
     for (const value of validValues) {
         const widget: Widget = Object.assign<Widget, Widget>(new Widget(), {name: value});
         const validationErrors = await new MetaValidator().validate(widget);
-        expect(Object.keys(validationErrors).length).toBe(0);
+        t.equal(Object.keys(validationErrors).length, 0, `value = ${value}`);
     }
 });
 
-test("decorators.IsString() invalid values", async () => {
+void test("decorators.IsString() invalid values", async t => {
     class Widget {
         @IsString()
         name: string;
@@ -62,6 +67,6 @@ test("decorators.IsString() invalid values", async () => {
     for (const value of invalidValues) {
         const widget: Widget = Object.assign<Widget, Widget>(new Widget(), {name: value});
         const validationErrors = await new MetaValidator().validate(widget);
-        expect(Object.keys(validationErrors).length).toBe(1);
+        t.equal(Object.keys(validationErrors).length, 1, `value = ${value}`);
     }
 });

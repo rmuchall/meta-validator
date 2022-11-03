@@ -1,5 +1,6 @@
-import {MetaValidator} from "../../src/MetaValidator";
-import {IsMaxLength} from "../../src/decorators/property/IsMaxLength";
+import {test, beforeEach} from "tap";
+import {MetaValidator} from "../../src/MetaValidator.js";
+import {IsMaxLength} from "../../src/decorators/property/IsMaxLength.js";
 
 const validValues: any[] = [
     "a",
@@ -17,9 +18,9 @@ const invalidValues: any[] = [
     null
 ];
 
-beforeEach(MetaValidator.clearMetadata);
+beforeEach(t => MetaValidator.clearMetadata());
 
-test("decorators.IsMaxLength() valid values", async () => {
+void test("decorators.IsMaxLength() valid values", async t => {
     class Widget {
         @IsMaxLength(5)
         name: string;
@@ -28,11 +29,11 @@ test("decorators.IsMaxLength() valid values", async () => {
     for (const value of validValues) {
         const widget: Widget = Object.assign<Widget, Widget>(new Widget(), {name: value});
         const validationErrors = await new MetaValidator().validate(widget);
-        expect(Object.keys(validationErrors).length).toBe(0);
+        t.equal(Object.keys(validationErrors).length, 0, `value = ${value}`);
     }
 });
 
-test("decorators.IsMaxLength() invalid values", async () => {
+void test("decorators.IsMaxLength() invalid values", async t => {
     class Widget {
         @IsMaxLength(5)
         name: string;
@@ -41,6 +42,6 @@ test("decorators.IsMaxLength() invalid values", async () => {
     for (const value of invalidValues) {
         const widget: Widget = Object.assign<Widget, Widget>(new Widget(), {name: value});
         const validationErrors = await new MetaValidator().validate(widget);
-        expect(Object.keys(validationErrors).length).toBe(1);
+        t.equal(Object.keys(validationErrors).length, 1, `value = ${value}`);
     }
 });

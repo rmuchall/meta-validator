@@ -1,5 +1,5 @@
-import {MetaValidator} from "../../MetaValidator";
-import {isAlpha} from "../../validators/is-alpha";
+import {MetaValidator} from "../../MetaValidator.js";
+import {isAlpha} from "../../validators/is-alpha.js";
 
 export function IsAlpha(): PropertyDecorator {
     return (target, propertyKey) => {

@@ -1,11 +1,11 @@
-import {test, beforeEach} from "tap";
+import t from "tap";
 import {MetaValidator} from "../../src/MetaValidator.js";
 import {IsString} from "../../src/decorators/property/IsString.js";
 import {IsEqualTo} from "../../src/decorators/property/IsEqualTo.js";
 
-beforeEach(MetaValidator.clearMetadata);
+t.beforeEach(MetaValidator.clearMetadata);
 
-void test("decorators.IsEqualTo() valid value", async t => {
+void t.test("decorators.IsEqualTo() valid value", async t => {
     class Widget {
         @IsString()
         topColor: string;
@@ -19,7 +19,7 @@ void test("decorators.IsEqualTo() valid value", async t => {
     t.equal(Object.keys(validationErrors).length, 0);
 });
 
-void test("decorators.IsEqualTo() invalid value", async t => {
+void t.test("decorators.IsEqualTo() invalid value", async t => {
     class Widget {
         @IsString()
         topColor: string;

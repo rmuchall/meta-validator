@@ -1,4 +1,4 @@
-import {test, beforeEach} from "tap";
+import t from "tap";
 import {MetaValidator} from "../../src/MetaValidator.js";
 import {isRegEx} from "../../src/validators/is-reg-ex.js";
 import {IsRegEx} from "../../src/decorators/property/IsRegEx.js";
@@ -16,9 +16,9 @@ const invalidValues: any[] = [
     undefined
 ];
 
-beforeEach(MetaValidator.clearMetadata);
+t.beforeEach(MetaValidator.clearMetadata);
 
-void test("functions.isRegEx() valid values", t => {
+void t.test("functions.isRegEx() valid values", t => {
     for (const value of validValues) {
         if (!isRegEx(value)) {
             throw new Error(`${JSON.stringify(value)} is false`);
@@ -30,7 +30,7 @@ void test("functions.isRegEx() valid values", t => {
     t.end();
 });
 
-void test("functions.isRegEx() invalid values", t => {
+void t.test("functions.isRegEx() invalid values", t => {
     for (const value of invalidValues) {
         if (isRegEx(value)) {
             throw new Error(`${JSON.stringify(value)} is true`);
@@ -42,7 +42,7 @@ void test("functions.isRegEx() invalid values", t => {
     t.end();
 });
 
-void test("decorators.IsRegEx() valid values", async t => {
+void t.test("decorators.IsRegEx() valid values", async t => {
     class Widget {
         @IsRegEx()
         name: string;
@@ -55,7 +55,7 @@ void test("decorators.IsRegEx() valid values", async t => {
     }
 });
 
-void test("invalid values", async t => {
+void t.test("invalid values", async t => {
     class Widget {
         @IsRegEx()
         name: string;

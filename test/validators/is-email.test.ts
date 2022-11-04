@@ -1,4 +1,4 @@
-import {test, beforeEach} from "tap";
+import t from "tap";
 import {MetaValidator} from "../../src/MetaValidator.js";
 import {isEmail} from "../../src/validators/is-email.js";
 import {IsEmail} from "../../src/decorators/property/IsEmail.js";
@@ -73,9 +73,9 @@ const invalidValues: any[] = [
     null
 ];
 
-beforeEach(MetaValidator.clearMetadata);
+t.beforeEach(MetaValidator.clearMetadata);
 
-void test("functions.isEmail() valid values", t => {
+void t.test("functions.isEmail() valid values", t => {
     for (const value of validValues) {
         if (!isEmail(value)) {
             throw new Error(`${JSON.stringify(value)} is false`);
@@ -87,7 +87,7 @@ void test("functions.isEmail() valid values", t => {
     t.end();
 });
 
-void test("functions.isEmail() invalid values", t => {
+void t.test("functions.isEmail() invalid values", t => {
     for (const value of invalidValues) {
         if (isEmail(value)) {
             throw new Error(`${JSON.stringify(value)} is true`);
@@ -99,7 +99,7 @@ void test("functions.isEmail() invalid values", t => {
     t.end();
 });
 
-void test("decorators.IsEmail() valid values", async t => {
+void t.test("decorators.IsEmail() valid values", async t => {
     class Widget {
         @IsEmail()
         email: string;
@@ -112,7 +112,7 @@ void test("decorators.IsEmail() valid values", async t => {
     }
 });
 
-void test("decorators.IsEmail() invalid values", async t => {
+void t.test("decorators.IsEmail() invalid values", async t => {
     class Widget {
         @IsEmail()
         email: string;

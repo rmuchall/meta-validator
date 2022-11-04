@@ -1,4 +1,4 @@
-import {test, beforeEach} from "tap";
+import t from "tap";
 import {MetaValidator} from "../../src/MetaValidator.js";
 import {isString} from "../../src/validators/is-string.js";
 import {IsString} from "../../src/decorators/property/IsString.js";
@@ -19,9 +19,9 @@ const invalidValues: any[] = [
     undefined
 ];
 
-beforeEach(MetaValidator.clearMetadata);
+t.beforeEach(MetaValidator.clearMetadata);
 
-void test("functions.isString() valid values", t => {
+void t.test("functions.isString() valid values", t => {
     for (const value of validValues) {
         if (!isString(value)) {
             throw new Error(`${JSON.stringify(value)} is false`);
@@ -33,7 +33,7 @@ void test("functions.isString() valid values", t => {
     t.end();
 });
 
-void test("functions.isString() invalid values", t => {
+void t.test("functions.isString() invalid values", t => {
     for (const value of invalidValues) {
         if (isString(value)) {
             throw new Error(`${JSON.stringify(value)} is true`);
@@ -45,7 +45,7 @@ void test("functions.isString() invalid values", t => {
     t.end();
 });
 
-void test("decorators.IsString() valid values", async t => {
+void t.test("decorators.IsString() valid values", async t => {
     class Widget {
         @IsString()
         name: string;
@@ -58,7 +58,7 @@ void test("decorators.IsString() valid values", async t => {
     }
 });
 
-void test("decorators.IsString() invalid values", async t => {
+void t.test("decorators.IsString() invalid values", async t => {
     class Widget {
         @IsString()
         name: string;

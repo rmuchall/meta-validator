@@ -1,4 +1,4 @@
-import {test, beforeEach} from "tap";
+import t from "tap";
 import {MetaValidator} from "../../src/MetaValidator.js";
 import {isIp} from "../../src/validators/is-ip.js";
 import {IsIp} from "../../src/decorators/property/IsIp.js";
@@ -50,9 +50,9 @@ const invalidValues: any[] = [
     null
 ];
 
-beforeEach(MetaValidator.clearMetadata);
+t.beforeEach(MetaValidator.clearMetadata);
 
-void test("functions.isIp() valid values", t => {
+void t.test("functions.isIp() valid values", t => {
     for (const value of validValues) {
         if (!isIp(value)) {
             throw new Error(`${JSON.stringify(value)} is false`);
@@ -64,7 +64,7 @@ void test("functions.isIp() valid values", t => {
     t.end();
 });
 
-void test("functions.isIp() invalid values", t => {
+void t.test("functions.isIp() invalid values", t => {
     for (const value of invalidValues) {
         if (isIp(value)) {
             throw new Error(`${JSON.stringify(value)} is true`);
@@ -76,7 +76,7 @@ void test("functions.isIp() invalid values", t => {
     t.end();
 });
 
-void test("decorators.IsIp() valid values", async t => {
+void t.test("decorators.IsIp() valid values", async t => {
     class Widget {
         @IsIp()
         ipAddress: string;
@@ -89,7 +89,7 @@ void test("decorators.IsIp() valid values", async t => {
     }
 });
 
-void test("decorators.IsIp() invalid values", async t => {
+void t.test("decorators.IsIp() invalid values", async t => {
     class Widget {
         @IsIp()
         ipAddress: string;

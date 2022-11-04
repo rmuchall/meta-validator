@@ -1,4 +1,4 @@
-import {test, beforeEach} from "tap";
+import t from "tap";
 import {MetaValidator} from "../../src/MetaValidator.js";
 import {IsMinLength} from "../../src/decorators/property/IsMinLength.js";
 
@@ -18,9 +18,9 @@ const invalidValues: any[] = [
     null
 ];
 
-beforeEach(MetaValidator.clearMetadata);
+t.beforeEach(MetaValidator.clearMetadata);
 
-void test("decorators.IsMinLength() valid values", async t => {
+void t.test("decorators.IsMinLength() valid values", async t => {
     class Widget {
         @IsMinLength(5)
         name: string;
@@ -33,7 +33,7 @@ void test("decorators.IsMinLength() valid values", async t => {
     }
 });
 
-void test("decorators.IsMinLength() invalid values", async t => {
+void t.test("decorators.IsMinLength() invalid values", async t => {
     class Widget {
         @IsMinLength(5)
         name: string;

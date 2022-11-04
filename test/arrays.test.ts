@@ -1,4 +1,4 @@
-import {test, beforeEach} from "tap";
+import t from "tap";
 import {MetaValidator} from "../src/MetaValidator.js";
 import {IsString} from "../src/decorators/property/IsString.js";
 import {IsNested} from "../src/decorators/property/IsNested.js";
@@ -19,9 +19,9 @@ const invalidValues: any[] = [
     null
 ];
 
-beforeEach(MetaValidator.clearMetadata);
+t.beforeEach(MetaValidator.clearMetadata);
 
-void test("Arrays valid values", async t => {
+void t.test("Arrays valid values", async t => {
     class WidgetColor {
         @IsString()
         color: string;
@@ -63,7 +63,7 @@ void test("Arrays valid values", async t => {
     }
 });
 
-void test("Arrays invalid values", async t => {
+void t.test("Arrays invalid values", async t => {
     class WidgetColor {
         @IsString()
         color: string;

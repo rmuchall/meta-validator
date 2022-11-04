@@ -1,4 +1,4 @@
-import {test, beforeEach} from "tap";
+import t from "tap";
 import {MetaValidator} from "../../src/MetaValidator.js";
 import {IsMaxLength} from "../../src/decorators/property/IsMaxLength.js";
 
@@ -18,9 +18,9 @@ const invalidValues: any[] = [
     null
 ];
 
-beforeEach(MetaValidator.clearMetadata);
+t.beforeEach(MetaValidator.clearMetadata);
 
-void test("decorators.IsMaxLength() valid values", async t => {
+void t.test("decorators.IsMaxLength() valid values", async t => {
     class Widget {
         @IsMaxLength(5)
         name: string;
@@ -33,7 +33,7 @@ void test("decorators.IsMaxLength() valid values", async t => {
     }
 });
 
-void test("decorators.IsMaxLength() invalid values", async t => {
+void t.test("decorators.IsMaxLength() invalid values", async t => {
     class Widget {
         @IsMaxLength(5)
         name: string;

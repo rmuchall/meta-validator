@@ -1,4 +1,4 @@
-import {test, beforeEach} from "tap";
+import t from "tap";
 import {MetaValidator} from "../../src/MetaValidator.js";
 import {isFqdn} from "../../src/validators/is-fqdn.js";
 import {IsFqDn} from "../../src/decorators/property/IsFqDn.js";
@@ -28,9 +28,9 @@ const invalidValues: any[] = [
     null
 ];
 
-beforeEach(MetaValidator.clearMetadata);
+t.beforeEach(MetaValidator.clearMetadata);
 
-void test("functions.isFqDn() valid values", t => {
+void t.test("functions.isFqDn() valid values", t => {
     for (const value of validValues) {
         if (!isFqdn(value)) {
             throw new Error(`${JSON.stringify(value)} is false`);
@@ -42,7 +42,7 @@ void test("functions.isFqDn() valid values", t => {
     t.end();
 });
 
-void test("functions.isFqDn() invalid values", t => {
+void t.test("functions.isFqDn() invalid values", t => {
     for (const value of invalidValues) {
         if (isFqdn(value)) {
             throw new Error(`${JSON.stringify(value)} is true`);
@@ -54,7 +54,7 @@ void test("functions.isFqDn() invalid values", t => {
     t.end();
 });
 
-void test("decorators.IsFqDn() valid values", async t => {
+void t.test("decorators.IsFqDn() valid values", async t => {
     class Widget {
         @IsFqDn()
         domainName: string;
@@ -67,7 +67,7 @@ void test("decorators.IsFqDn() valid values", async t => {
     }
 });
 
-void test("decorators.IsFqDn() invalid values", async t => {
+void t.test("decorators.IsFqDn() invalid values", async t => {
     class Widget {
         @IsFqDn()
         domainName: string;

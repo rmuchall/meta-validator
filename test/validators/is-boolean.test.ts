@@ -1,4 +1,4 @@
-import {test, beforeEach} from "tap";
+import t from "tap";
 import {MetaValidator} from "../../src/MetaValidator.js";
 import {IsBoolean} from "../../src/decorators/property/IsBoolean.js";
 
@@ -15,9 +15,9 @@ const invalidValues: any[] = [
     123
 ];
 
-beforeEach(MetaValidator.clearMetadata);
+t.beforeEach(MetaValidator.clearMetadata);
 
-void test("decorators.IsBoolean() valid values", async t => {
+void t.test("decorators.IsBoolean() valid values", async t => {
     class Widget {
         @IsBoolean()
         isValid: any;
@@ -30,7 +30,7 @@ void test("decorators.IsBoolean() valid values", async t => {
     }
 });
 
-void test("decorators.IsBoolean() invalid values", async t => {
+void t.test("decorators.IsBoolean() invalid values", async t => {
     class Widget {
         @IsBoolean()
         isValid: any;

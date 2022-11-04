@@ -1,4 +1,4 @@
-import {test, beforeEach} from "tap";
+import t from "tap";
 import {MetaValidator} from "../../src/MetaValidator.js";
 import {isEmpty} from "../../src/validators/is-empty.js";
 import {IsEmpty} from "../../src/decorators/property/IsEmpty.js";
@@ -18,9 +18,9 @@ const invalidValues: any[] = [
     {test: 1234}
 ];
 
-beforeEach(MetaValidator.clearMetadata);
+t.beforeEach(MetaValidator.clearMetadata);
 
-void test("functions.isEmpty() valid values", t => {
+void t.test("functions.isEmpty() valid values", t => {
     for (const value of validValues) {
         if (!isEmpty(value)) {
             throw new Error(`${JSON.stringify(value)} is false`);
@@ -32,7 +32,7 @@ void test("functions.isEmpty() valid values", t => {
     t.end();
 });
 
-void test("functions.isEmpty() invalid values", t => {
+void t.test("functions.isEmpty() invalid values", t => {
     for (const value of invalidValues) {
         if (isEmpty(value)) {
             throw new Error(`${JSON.stringify(value)} is true`);
@@ -44,7 +44,7 @@ void test("functions.isEmpty() invalid values", t => {
     t.end();
 });
 
-void test("decorators.IsEmpty() valid values", async t => {
+void t.test("decorators.IsEmpty() valid values", async t => {
     class Widget {
         @IsEmpty()
         name: any;
@@ -57,7 +57,7 @@ void test("decorators.IsEmpty() valid values", async t => {
     }
 });
 
-void test("decorators.IsEmpty() invalid values", async t => {
+void t.test("decorators.IsEmpty() invalid values", async t => {
     class Widget {
         @IsEmpty()
         name: any;

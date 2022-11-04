@@ -1,24 +1,24 @@
-import {test, beforeEach} from "tap";
+import t from "tap";
 import {MetaValidator} from "../src/MetaValidator.js";
 import {IsString} from "../src/decorators/property/IsString.js";
 import {IsNested} from "../src/decorators/property/IsNested.js";
 import {IsNumber} from "../src/decorators/property/IsNumber.js";
 
-beforeEach(MetaValidator.clearMetadata);
+t.beforeEach(MetaValidator.clearMetadata);
 
-void test("validate non-object: undefined", async t => {
+void t.test("validate non-object: undefined", async t => {
     await t.rejects(new MetaValidator().validate(undefined as any));
 });
 
-void test("validate non-object: null", async t => {
+void t.test("validate non-object: null", async t => {
     await t.rejects(new MetaValidator().validate(null as any));
 });
 
-void test("validate non-object: string", async t => {
+void t.test("validate non-object: string", async t => {
     await t.rejects(() => new MetaValidator().validate("test" as any));
 });
 
-void test("no metadata", async t => {
+void t.test("no metadata", async t => {
     class Widget {
         name: string;
     }
@@ -26,7 +26,7 @@ void test("no metadata", async t => {
     await t.rejects(new MetaValidator().validate(new Widget()));
 });
 
-void test("throw error", async t => {
+void t.test("throw error", async t => {
     function ThrowError(): PropertyDecorator {
         return (target, propertyKey) => {
             MetaValidator.addMetadata({
@@ -55,7 +55,7 @@ void test("throw error", async t => {
     await t.rejects(new MetaValidator().validate(Object.assign<Widget, Widget>(new Widget(), {name: "this is a test"})));
 });
 
-void test("extraneous properties", async t => {
+void t.test("extraneous properties", async t => {
     class Widget {
         @IsString()
         name: string;
@@ -67,7 +67,7 @@ void test("extraneous properties", async t => {
     await t.rejects(new MetaValidator().validate(widget));
 });
 
-void test("proto vulnerability", async t => {
+void t.test("proto vulnerability", async t => {
     class Widget {
         @IsString()
         name: string;
@@ -82,7 +82,7 @@ void test("proto vulnerability", async t => {
     await t.rejects(new MetaValidator().validate(widget));
 });
 
-void test("circular dependencies", async t => {
+void t.test("circular dependencies", async t => {
     class WidgetDetail {
         @IsString()
         material: string;

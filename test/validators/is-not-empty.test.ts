@@ -1,4 +1,4 @@
-import {test, beforeEach} from "tap";
+import t from "tap";
 import {MetaValidator} from "../../src/MetaValidator.js";
 import {IsNotEmpty} from "../../src/decorators/property/IsNotEmpty.js";
 
@@ -17,9 +17,9 @@ const invalidValues: any[] = [
     null
 ];
 
-beforeEach(MetaValidator.clearMetadata);
+t.beforeEach(MetaValidator.clearMetadata);
 
-void test("decorators.IsNotEmpty() valid values", async t => {
+void t.test("decorators.IsNotEmpty() valid values", async t => {
     class Widget {
         @IsNotEmpty()
         name: any;
@@ -32,7 +32,7 @@ void test("decorators.IsNotEmpty() valid values", async t => {
     }
 });
 
-void test("decorators.IsNotEmpty() invalid values", async t => {
+void t.test("decorators.IsNotEmpty() invalid values", async t => {
     class Widget {
         @IsNotEmpty()
         name: any;

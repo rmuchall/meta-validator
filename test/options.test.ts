@@ -1,4 +1,4 @@
-import {test, beforeEach, only} from "tap";
+import t from "tap";
 import {MetaValidator} from "../src/MetaValidator.js";
 import {IsNotEmpty} from "../src/decorators/property/IsNotEmpty.js";
 import {IsEqualTo} from "../src/decorators/property/IsEqualTo.js";
@@ -18,9 +18,9 @@ const invalidValues: any[] = [
     // undefined indicates a missing property (isSkipUndefinedValues)
 ];
 
-beforeEach(MetaValidator.clearMetadata);
+t.beforeEach(MetaValidator.clearMetadata);
 
-void test("isSkipUndefinedValues valid values", async t => {
+void t.test("isSkipUndefinedValues valid values", async t => {
     class Widget {
         @IsNotEmpty()
         name: any;
@@ -36,7 +36,7 @@ void test("isSkipUndefinedValues valid values", async t => {
     }
 });
 
-void test("isSkipUndefinedValues invalid values", async t => {
+void t.test("isSkipUndefinedValues invalid values", async t => {
     class Widget {
         @IsNotEmpty()
         name: any;
@@ -52,7 +52,7 @@ void test("isSkipUndefinedValues invalid values", async t => {
     }
 });
 
-void test("custom validation errors", async t => {
+void t.test("custom validation errors", async t => {
     class Widget {
         @IsValid()
         name: any;
@@ -72,7 +72,7 @@ void test("custom validation errors", async t => {
     t.equal((validationErrors["sameName"] as string[])[0], "CUSTOM: sameName must be equal to name");
 });
 
-void test("custom validation error formatter", async t => {
+void t.test("custom validation error formatter", async t => {
     class Widget {
         @IsValid()
         name: any;

@@ -1,4 +1,4 @@
-import {test, beforeEach} from "tap";
+import t from "tap";
 import {MetaValidator} from "../../src/MetaValidator.js";
 import {isAlpha} from "../../src/validators/is-alpha.js";
 import {IsAlpha} from "../../src/decorators/property/IsAlpha.js";
@@ -22,9 +22,9 @@ const invalidValues: any[] = [
     null
 ];
 
-beforeEach(MetaValidator.clearMetadata);
+t.beforeEach(MetaValidator.clearMetadata);
 
-void test("functions.isAlpha() valid values", t => {
+void t.test("functions.isAlpha() valid values", t => {
     for (const value of validValues) {
         if (!isAlpha(value)) {
             throw new Error(`${JSON.stringify(value)} is false`);
@@ -36,7 +36,7 @@ void test("functions.isAlpha() valid values", t => {
     t.end();
 });
 
-void test("functions.isAlpha() invalid values", t => {
+void t.test("functions.isAlpha() invalid values", t => {
     for (const value of invalidValues) {
         if (isAlpha(value)) {
             throw new Error(`${JSON.stringify(value)} is true`);
@@ -48,7 +48,7 @@ void test("functions.isAlpha() invalid values", t => {
     t.end();
 });
 
-void test("decorators.IsAlpha() valid values", async t => {
+void t.test("decorators.IsAlpha() valid values", async t => {
     class Widget {
         @IsAlpha()
         name: string;
@@ -61,7 +61,7 @@ void test("decorators.IsAlpha() valid values", async t => {
     }
 });
 
-void test("decorators.IsAlpha() invalid values", async t => {
+void t.test("decorators.IsAlpha() invalid values", async t => {
     class Widget {
         @IsAlpha()
         name: string;

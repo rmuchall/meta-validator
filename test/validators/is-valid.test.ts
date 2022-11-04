@@ -1,10 +1,10 @@
-import {test, beforeEach} from "tap";
+import t from "tap";
 import {MetaValidator} from "../../src/MetaValidator.js";
 import {IsValid} from "../../src/decorators/property/IsValid.js";
 
-beforeEach(MetaValidator.clearMetadata);
+t.beforeEach(MetaValidator.clearMetadata);
 
-void test("decorators.IsValid() is always valid", async t => {
+void t.test("decorators.IsValid() is always valid", async t => {
     class Widget {
         @IsValid()
         name: string;

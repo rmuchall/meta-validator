@@ -1,4 +1,4 @@
-import {test, beforeEach} from "tap";
+import t from "tap";
 import {MetaValidator} from "../../src/MetaValidator.js";
 import {isUrl} from "../../src/validators/is-url.js";
 import {IsUrl} from "../../src/decorators/property/IsUrl.js";
@@ -89,9 +89,9 @@ const invalidValues: any[] = [
     null
 ];
 
-beforeEach(MetaValidator.clearMetadata);
+t.beforeEach(MetaValidator.clearMetadata);
 
-void test("functions.isUrl() valid values", t => {
+void t.test("functions.isUrl() valid values", t => {
     for (const value of validValues) {
         if (!isUrl(value)) {
             throw new Error(`${JSON.stringify(value)} is false`);
@@ -103,7 +103,7 @@ void test("functions.isUrl() valid values", t => {
     t.end();
 });
 
-void test("functions.isUrl() invalid values", t => {
+void t.test("functions.isUrl() invalid values", t => {
     for (const value of invalidValues) {
         if (isUrl(value)) {
             throw new Error(`${JSON.stringify(value)} is true`);
@@ -115,7 +115,7 @@ void test("functions.isUrl() invalid values", t => {
     t.end();
 });
 
-void test("decorators.IsUrl() valid values", async t => {
+void t.test("decorators.IsUrl() valid values", async t => {
     class Widget {
         @IsUrl()
         website: string;
@@ -128,7 +128,7 @@ void test("decorators.IsUrl() valid values", async t => {
     }
 });
 
-void test("decorators.IsUrl() invalid values", async t => {
+void t.test("decorators.IsUrl() invalid values", async t => {
     class Widget {
         @IsUrl()
         website: string;

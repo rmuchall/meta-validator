@@ -29,6 +29,8 @@ export class MetaValidator {
     }
 
     private async validateObject(obj: Record<string, any>, globalOptions: Options): Promise<ValidationErrors> {
+        const className = obj.constructor.name;
+
         // Check for circular dependencies
         if (this.circularCheck.has(obj)) {
             throw new Error("Object has a circular dependency");
@@ -41,28 +43,31 @@ export class MetaValidator {
         }
 
         // Check obj has corresponding validation metadata
-        const className = obj.constructor.name;
-        if (!MetaValidator.metadata[className]) {
+        const classTypeNames = MetaValidator.getClassTypeNames(obj);
+        const metadataKeys = Object.keys(MetaValidator.metadata);
+        const metadataIntersection = classTypeNames.filter(element => metadataKeys.includes(element));
+        if (metadataIntersection.length === 0) {
             throw new Error(`No validation metadata found for ${className}`);
-        }
-
-        // Check for extraneous properties
-        for (const propertyKey of Object.keys(obj)) {
-            if (!MetaValidator.metadata[className][propertyKey]) {
-                throw new Error(`Extraneous property [${propertyKey}] found in instance of class [${className}]`);
-            }
         }
 
         // Perform validation
         const validationErrors: ValidationErrors = {};
-        for (const propertyKey of Object.keys(MetaValidator.metadata[className])) {
+        for (const propertyKey of Object.keys(obj)) {
+            const foundMetaDataKeys = metadataIntersection.filter(value => Object.hasOwn(MetaValidator.metadata[value], propertyKey));
+            if (foundMetaDataKeys.length > 1) {
+                throw new Error("Multiple conflicting validation contexts found");
+            }
+
+            if (foundMetaDataKeys.length === 0) {
+                throw new Error(`Extraneous property [${propertyKey}] found in instance of class [${className}]`);
+            }
 
             // Skip properties with undefined values?
             if (globalOptions.isSkipUndefinedValues && obj[propertyKey] === undefined) {
                 continue;
             }
 
-            for (const context of MetaValidator.metadata[className][propertyKey]) {
+            for (const context of MetaValidator.metadata[foundMetaDataKeys[0]][propertyKey]) {
                 if ((context.isNested && context.validator) || (!context.isNested && !context.validator)) {
                     throw new Error("Invalid metadata");
                 }
@@ -149,5 +154,20 @@ export class MetaValidator {
 
     static clearMetadata(): void {
         MetaValidator.metadata = {};
+    }
+
+    static getClassTypeNames(classInstance: Record<string, any>): string[] {
+        const classTypeNames: string[] = [];
+        classTypeNames.push(classInstance.constructor.name);
+
+        let proto: any = classInstance["__proto__"].constructor;
+        do {
+            proto = proto.__proto__;
+            if (proto.name !== "") {
+                classTypeNames.push(proto.name);
+            }
+        } while (proto.name !== "");
+
+        return classTypeNames;
     }
 }

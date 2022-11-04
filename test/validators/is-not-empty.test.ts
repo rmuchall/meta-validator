@@ -17,7 +17,7 @@ const invalidValues: any[] = [
     null
 ];
 
-beforeEach(t => MetaValidator.clearMetadata());
+beforeEach(MetaValidator.clearMetadata);
 
 void test("decorators.IsNotEmpty() valid values", async t => {
     class Widget {

@@ -4,7 +4,7 @@ import {IsString} from "../src/decorators/property/IsString.js";
 import {IsNested} from "../src/decorators/property/IsNested.js";
 import {IsNumber} from "../src/decorators/property/IsNumber.js";
 
-beforeEach(t => MetaValidator.clearMetadata());
+beforeEach(MetaValidator.clearMetadata);
 
 void test("validate non-object: undefined", async t => {
     await t.rejects(new MetaValidator().validate(undefined as any));

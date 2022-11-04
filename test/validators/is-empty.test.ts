@@ -18,7 +18,7 @@ const invalidValues: any[] = [
     {test: 1234}
 ];
 
-beforeEach(t => MetaValidator.clearMetadata());
+beforeEach(MetaValidator.clearMetadata);
 
 void test("functions.isEmpty() valid values", t => {
     for (const value of validValues) {

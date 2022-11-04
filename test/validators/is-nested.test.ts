@@ -20,7 +20,7 @@ const invalidValues: any[] = [
     null
 ];
 
-beforeEach(t => MetaValidator.clearMetadata());
+beforeEach(MetaValidator.clearMetadata);
 
 void test("decorators.IsNested() valid values", async t => {
     class WidgetColor {

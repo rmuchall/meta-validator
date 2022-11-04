@@ -17,7 +17,7 @@ const invalidValues: any[] = [
     undefined
 ];
 
-beforeEach(t => MetaValidator.clearMetadata());
+beforeEach(MetaValidator.clearMetadata);
 
 void test("functions.isNumber() valid values", t => {
     for (const value of validValues) {

@@ -18,7 +18,7 @@ const invalidValues: any[] = [
     // undefined indicates a missing property (isSkipUndefinedValues)
 ];
 
-beforeEach(t => MetaValidator.clearMetadata());
+beforeEach(MetaValidator.clearMetadata);
 
 void test("isSkipUndefinedValues valid values", async t => {
     class Widget {

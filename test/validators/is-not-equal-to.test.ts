@@ -3,7 +3,7 @@ import {MetaValidator} from "../../src/MetaValidator.js";
 import {IsString} from "../../src/decorators/property/IsString.js";
 import {IsNotEqualTo} from "../../src/decorators/property/IsNotEqualTo.js";
 
-beforeEach(t => MetaValidator.clearMetadata());
+beforeEach(MetaValidator.clearMetadata);
 
 void test("decorators.IsNotEqualTo() valid value", async t => {
     class Widget {

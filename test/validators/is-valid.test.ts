@@ -2,7 +2,7 @@ import {test, beforeEach} from "tap";
 import {MetaValidator} from "../../src/MetaValidator.js";
 import {IsValid} from "../../src/decorators/property/IsValid.js";
 
-beforeEach(t => MetaValidator.clearMetadata());
+beforeEach(MetaValidator.clearMetadata);
 
 void test("decorators.IsValid() is always valid", async t => {
     class Widget {

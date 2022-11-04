@@ -22,7 +22,7 @@ const invalidValues: any[] = [
     null
 ];
 
-beforeEach(() => MetaValidator.clearMetadata());
+beforeEach(MetaValidator.clearMetadata);
 
 void test("functions.isString() valid values", t => {
     for (const value of validValues) {

@@ -28,7 +28,7 @@ const invalidValues: any[] = [
     null
 ];
 
-beforeEach(t => MetaValidator.clearMetadata());
+beforeEach(MetaValidator.clearMetadata);
 
 void test("functions.isFqDn() valid values", t => {
     for (const value of validValues) {

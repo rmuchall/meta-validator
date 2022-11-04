@@ -15,7 +15,7 @@ const invalidValues: any[] = [
     123
 ];
 
-beforeEach(t => MetaValidator.clearMetadata());
+beforeEach(MetaValidator.clearMetadata);
 
 void test("decorators.IsBoolean() valid values", async t => {
     class Widget {

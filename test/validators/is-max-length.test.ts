@@ -18,7 +18,7 @@ const invalidValues: any[] = [
     null
 ];
 
-beforeEach(t => MetaValidator.clearMetadata());
+beforeEach(MetaValidator.clearMetadata);
 
 void test("decorators.IsMaxLength() valid values", async t => {
     class Widget {

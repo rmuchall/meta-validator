@@ -1,6 +1,6 @@
 {
   "name": "meta-validator",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "meta-validator",
   "type": "module",
   "exports": {
